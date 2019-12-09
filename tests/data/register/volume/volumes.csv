@@ -1,0 +1,29 @@
+structure_name,left_volume_mm3,right_volume_mm3,total_volume_mm3
+"Primary somatosensory area, lower limb, layer 2/3",0.000446,0.000446,0.000892
+"Primary somatosensory area, barrel field, layer 2/3",0.011347,0.011347,0.022694
+"Retrosplenial area, dorsal part, layer 6a",8.999999999999999e-05,8.999999999999999e-05,0.00017999999999999998
+"Retrosplenial area, ventral part, layer 2/3",0.002927,0.002927,0.005854
+"Retrosplenial area, dorsal part, layer 2/3",0.0006569999999999999,0.0006569999999999999,0.0013139999999999998
+"Retrosplenial area, dorsal part, layer 1",0.000355,0.000355,0.00071
+"Primary somatosensory area, lower limb, layer 6a",0.006853,0.006853,0.013706
+"Retrosplenial area, ventral part, layer 1",0.0032199999999999998,0.0032199999999999998,0.0064399999999999995
+"Primary somatosensory area, upper limb, layer 4",0.003139,0.003139,0.006278
+"Retrosplenial area, ventral part, layer 6a",0.000208,0.000208,0.000416
+"Retrosplenial area, dorsal part, layer 5",0.00282,0.00282,0.00564
+"Primary somatosensory area, upper limb, layer 5",0.004360999999999999,0.004360999999999999,0.008721999999999999
+"Primary motor area, Layer 5",0.002242,0.002242,0.004484
+"Retrosplenial area, ventral part, layer 5",0.0038169999999999996,0.0038169999999999996,0.007633999999999999
+"Secondary motor area, layer 5",0.0013269999999999998,0.0013269999999999998,0.0026539999999999997
+"Anterior cingulate area, ventral part, 6a",1.8999999999999998e-05,1.8999999999999998e-05,3.7999999999999995e-05
+"Primary motor area, Layer 6a",0.0054789999999999995,0.0054789999999999995,0.010957999999999999
+"Primary somatosensory area, upper limb, layer 2/3",0.0032259999999999997,0.0032259999999999997,0.006451999999999999
+"Anterior cingulate area, dorsal part, layer 6a",0.002979,0.002979,0.005958
+"Anterior cingulate area, dorsal part, layer 6b",9e-06,9e-06,1.8e-05
+"Primary somatosensory area, barrel field, layer 1",0.006974999999999999,0.006974999999999999,0.013949999999999999
+"Anterior cingulate area, dorsal part, layer 5",0.000437,0.000437,0.000874
+"Secondary motor area, layer 6a",0.00584,0.00584,0.01168
+"Primary somatosensory area, barrel field, layer 4",0.002901,0.002901,0.005802
+"Primary somatosensory area, barrel field, layer 5",8e-06,8e-06,1.6e-05
+"Secondary motor area, layer 6b",8.099999999999999e-05,8.099999999999999e-05,0.00016199999999999998
+"Primary somatosensory area, lower limb, layer 4",0.003689,0.003689,0.007378
+"Primary somatosensory area, lower limb, layer 5",0.016626,0.016626,0.033252
