@@ -8,7 +8,7 @@ microscopy datasets, and subsequent atlas-based segmentation by
 [Adam Tyson](https://github.com/adamltyson), 
 [Charly Rousseau](https://github.com/crousseau) & 
 [Christian Niedworok](https://github.com/cniedwor) 
-from the [Margrie Lab at the Sainsbury Wellcome Centre](https://www.sainsburywellcome.org/web/groups/margrie-lab)
+from the [Margrie Lab at the Sainsbury Wellcome Centre](https://www.sainsburywellcome.org/web/groups/margrie-lab).
 
 
 This is a Python port of 
