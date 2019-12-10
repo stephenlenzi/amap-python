@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 from micrometa.micrometa import SUPPORTED_METADATA_TYPES
-from amap.download.cli import atlas_parser, download_atlas_parser
+from amap.download.cli import atlas_parser, download_directory_parser
 
 
 from amap.register import register
@@ -36,7 +36,7 @@ def register_cli_parser():
     parser = geometry_parser(parser)
     parser = misc_parse(parser)
     parser = atlas_parser(parser)
-    parser = download_atlas_parser(parser)
+    parser = download_directory_parser(parser)
 
     return parser
 
