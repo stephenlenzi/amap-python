@@ -13,7 +13,7 @@ temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
 
 
-def atlas_parser(parser):
+def download_atlas_parser(parser):
     parser.add_argument(
         "--install-path",
         dest="install_path",
@@ -25,8 +25,12 @@ def atlas_parser(parser):
         "--download-path",
         dest="download_path",
         type=str,
-        help="The path to download atlas into.",
+        help="The path to download files into.",
     )
+    return parser
+
+
+def atlas_parser(parser):
     parser.add_argument(
         "--no-atlas",
         dest="no_atlas",
@@ -43,9 +47,11 @@ def atlas_parser(parser):
     return parser
 
 
+
 def download_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = atlas_parser(parser)
+    parser = download_atlas_parser(parser)
     return parser
 
 
