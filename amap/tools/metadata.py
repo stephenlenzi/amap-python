@@ -10,7 +10,7 @@ or read from the metadata using micrometa.
 from amap.tools.exceptions import CommandLineInputError
 from argparse import ArgumentTypeError
 
-from micrometa.micrometa import get_acqusition_metadata
+from micrometa.micrometa import get_acquisition_metadata
 
 
 def define_pixel_sizes(args):
@@ -27,7 +27,7 @@ def define_pixel_sizes(args):
                 "no metadata file has been supplied"
             )
         try:
-            metadata = get_acqusition_metadata(args.metadata)
+            metadata = get_acquisition_metadata(args.metadata)
         except NotImplementedError:
             raise CommandLineInputError(
                 "Not all pixel sizes are defined on the command line, but the"
