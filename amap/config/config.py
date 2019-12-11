@@ -22,6 +22,6 @@ def get_binary(binaries_folder, program_name):
 
 def get_config_ob(config_path):
     config_obj = ConfigObj(
-        config_path, encoding="UTF8", indent_type="    ", unrepr=True
+        config_path, encoding="UTF8", indent_type="    ",
     )
     return config_obj
