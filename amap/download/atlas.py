@@ -10,9 +10,9 @@ atlas_urls = {
     "allen_2017": "https://gin.g-node.org/cellfinder/atlas/raw/master/allen2017.tar.gz"
 }
 
-download_requirements_gb = {"allen_2017": 1.3}
+download_requirements_gb = {"allen_2017": 1.8}
 
-extract_requirements_gb = {"allen_2017": 8.6}
+extract_requirements_gb = {"allen_2017": 11.5}
 
 
 def main(atlas, atlas_dir, download_path):
