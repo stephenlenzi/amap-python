@@ -21,6 +21,7 @@ from amap.tools.metadata import define_pixel_sizes
 from amap.tools import source_files
 from amap.config.config import get_config_ob
 from amap.download import atlas as atlas_download
+from amap.download.download import amend_cfg
 import amap as program_for_log
 
 
@@ -280,8 +281,11 @@ def prep_registration(args):
     if not atlas_files_exist:
         logging.warning("Atlas does not exist, downloading.")
         if args.download_path is None:
-            args.download_path = os.path.join(temp_dir_path, "atlas.tar.bz2")
+            args.download_path = os.path.join(temp_dir_path, "atlas.tar.gz")
         atlas_download.main(args.atlas, args.install_path, args.download_path)
+        amend_cfg(
+            new_atlas_folder=args.install_path, atlas=args.atlas,
+        )
     if args.registration_config is None:
         args.registration_config = source_files.source_custom_config()
     logging.debug("Making registration directory")
