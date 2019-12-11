@@ -11,6 +11,8 @@ import os
 import subprocess
 import glob
 import psutil
+import platform
+import shutil
 
 from tempfile import gettempdir
 from natsort import natsorted
@@ -194,8 +196,13 @@ def disk_free_gb(file_path):
     :param file_path: File path on the disk to be checked
     :return: Free space in GB
     """
-    stats = os.statvfs(file_path)
-    return (stats.f_frsize * stats.f_bavail) / 1024 ** 3
+    if platform.system() == 'Windows':
+        drive, _ = os.path.splitdrive(file_path)
+        total, used, free = shutil.disk_usage(drive)
+        return free / 1024 ** 3
+    else:
+        stats = os.statvfs(file_path)
+        return (stats.f_frsize * stats.f_bavail) / 1024 ** 3
 
 
 def get_free_ram():
