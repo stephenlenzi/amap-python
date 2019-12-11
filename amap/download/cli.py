@@ -47,7 +47,6 @@ def atlas_parser(parser):
     return parser
 
 
-
 def download_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = atlas_parser(parser)
@@ -60,7 +59,6 @@ def main():
     if args.download_path is None:
         args.download_path = os.path.join(temp_dir_path, "atlas.tar.gz")
     if not args.no_atlas:
-        # atlas_dir = os.path.join(args.install_path, "atlas")
         atlas.main(args.atlas, args.install_path, args.download_path)
 
     amend_cfg(

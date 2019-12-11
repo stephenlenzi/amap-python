@@ -196,7 +196,7 @@ def disk_free_gb(file_path):
     :param file_path: File path on the disk to be checked
     :return: Free space in GB
     """
-    if platform.system() == 'Windows':
+    if platform.system() == "Windows":
         drive, _ = os.path.splitdrive(file_path)
         total, used, free = shutil.disk_usage(drive)
         return free / 1024 ** 3
