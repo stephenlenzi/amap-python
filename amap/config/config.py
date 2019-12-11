@@ -1,3 +1,4 @@
+import os
 import platform
 from configobj import ConfigObj
 
@@ -16,7 +17,7 @@ except KeyError:
 
 
 def get_binary(binaries_folder, program_name):
-    path = "{}/{}/{}".format(binaries_folder, os_folder_name, program_name)
+    path = os.path.join(binaries_folder, os_folder_name, program_name)
     return path
 
 
