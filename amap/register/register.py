@@ -1,12 +1,15 @@
 import os
 import logging
 import numpy as np
+
+from pathlib import Path
+
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration
 from amap.tools import general, system
 from amap.register.volume import calculate_volumes
 from amap.config.atlas import Atlas
-
+from amap.vis.boundaries import main as calc_boundaries
 from amap.register.registration_params import RegistrationParams
 
 flips = {
@@ -123,6 +126,8 @@ class Paths:
             "inverse_control_point_file.nii"
         )
 
+        self.boundaries_file_path = self.make_reg_path("boundaries.nii")
+
         (
             self.tmp__affine_log_file_path,
             self.tmp__affine_error_path,
@@ -200,6 +205,7 @@ def main(
     sort_input_file=False,
     save_downsampled=True,
     additional_images_downsample=None,
+    boundaries=True,
     debug=False,
 ):
     """
@@ -224,51 +230,61 @@ def main(
     {image_name: image_to_be_downsampled}
     :return:
     """
-    paths = Paths(registration_output_folder)
-    logging.info("Preprocessing data for registration")
     n_processes = system.get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
-
-    logging.info("Loading data")
+    paths = Paths(registration_output_folder)
 
     atlas = Atlas(registration_config, dest_folder=registration_output_folder)
 
-    brain = BrainProcessor(
-        atlas,
-        target_brain_path,
-        registration_output_folder,
-        x_pixel_um,
-        y_pixel_um,
-        z_pixel_um,
-        original_orientation=orientation,
-        load_parallel=load_parallel,
-        sort_input_file=sort_input_file,
-        n_free_cpus=n_free_cpus,
-    )
+    if (
+        Path(paths.registered_atlas_path).exists()
+        and Path(paths.registered_hemispheres_img_path).exists()
+        and Path(paths.inverse_control_point_file_path).exists()
+    ):
+        pass
+    else:
+        logging.info("Preprocessing data for registration")
+        logging.info("Loading data")
 
-    # reorients the atlas to the orientation of the sample
-    brain.swap_atlas_orientation_to_self()
+        brain = BrainProcessor(
+            atlas,
+            target_brain_path,
+            registration_output_folder,
+            x_pixel_um,
+            y_pixel_um,
+            z_pixel_um,
+            original_orientation=orientation,
+            load_parallel=load_parallel,
+            sort_input_file=sort_input_file,
+            n_free_cpus=n_free_cpus,
+        )
 
-    # reorients atlas to the nifti (origin is the most ventral, posterior,
-    # left voxel) coordinate framework
+        # reorients the atlas to the orientation of the sample
+        brain.swap_atlas_orientation_to_self()
 
-    flip = flips[orientation]
-    brain.flip_atlas(flip)
+        # reorients atlas to the nifti (origin is the most ventral, posterior,
+        # left voxel) coordinate framework
 
-    # flips if the input data doesnt match the nifti standard
-    brain.flip_atlas((flip_x, flip_y, flip_z))
+        flip = flips[orientation]
+        brain.flip_atlas(flip)
 
-    brain.atlas.save_all()
-    if save_downsampled:
-        brain.target_brain = brain.target_brain.astype(np.uint16, copy=False)
-        logging.info("Saving downsampled image")
-        brain.save(paths.downsampled_brain_path)
+        # flips if the input data doesnt match the nifti standard
+        brain.flip_atlas((flip_x, flip_y, flip_z))
 
-    brain.filter()
-    logging.info("Saving filtered image")
-    brain.save(paths.tmp__downsampled_filtered)
+        brain.atlas.save_all()
+        if save_downsampled:
+            brain.target_brain = brain.target_brain.astype(
+                np.uint16, copy=False
+            )
+            logging.info("Saving downsampled image")
+            brain.save(paths.downsampled_brain_path)
 
-    del brain
+        brain.filter()
+        logging.info("Saving filtered image")
+        brain.save(paths.tmp__downsampled_filtered)
+
+        del brain
+
     if additional_images_downsample:
         for name, image in additional_images_downsample.items():
             save_downsampled_image(
@@ -306,38 +322,81 @@ def main(
         n_processes=n_processes,
     )
 
-    logging.info("Registering")
-    logging.info("Starting affine registration")
+    if (
+        Path(paths.registered_atlas_path).exists()
+        and Path(paths.registered_hemispheres_img_path).exists()
+        and Path(paths.inverse_control_point_file_path).exists()
+    ):
+        logging.info(
+            "Affine and freeform registration allready completed, skipping"
+        )
+    else:
+        if (
+            Path(paths.tmp__affine_registered_atlas_brain_path).exists()
+            or Path(paths.control_point_file_path).exists()
+        ):
+            logging.info("Registering")
+            logging.info("Starting affine registration")
+            brain_reg.register_affine()
+        else:
+            logging.info("Affine registration allready completed, skipping")
 
-    brain_reg.register_affine()
-    logging.info("Starting freeform registration")
-    brain_reg.register_freeform()
+        if Path(paths.control_point_file_path).exists():
+            logging.info("Freeform registration allready completed, skipping.")
+        else:
 
-    logging.info("Generating inverse (sample to atlas) transforms")
-    brain_reg.generate_inverse_transforms()
+            logging.info("Starting freeform registration")
+            brain_reg.register_freeform()
 
-    logging.info("Starting segmentation")
-    brain_reg.segment()
+    if Path(paths.registered_atlas_path).exists():
+        logging.info("Registered atlas exists, skipping")
+    else:
+        logging.info("Starting segmentation")
+        brain_reg.segment()
 
-    logging.info("Segmenting hemispheres")
-    brain_reg.register_hemispheres()
+    if Path(paths.registered_hemispheres_img_path).exists():
+        logging.info("Registered hemispheres exist, skipping")
+    else:
+        logging.info("Segmenting hemispheres")
+        brain_reg.register_hemispheres()
+
+    if Path(paths.inverse_control_point_file_path).exists():
+        logging.info("Inverse transform exists, skipping")
+    else:
+        logging.info("Generating inverse (sample to atlas) transforms")
+        brain_reg.generate_inverse_transforms()
 
     logging.info("Registration complete")
 
-    logging.info("Calculating volumes of each brain area")
+    if Path(paths.volume_csv_path).exists():
+        logging.info("Volumes csv exists, skipping")
+    else:
+        logging.info("Calculating volumes of each brain area")
+        calculate_volumes(
+            paths.registered_atlas_path,
+            paths.hemispheres_atlas_path,
+            atlas.get_structures_path(),
+            registration_config,
+            paths.volume_csv_path,
+            left_hemisphere_value=atlas.get_left_hemisphere_value(),
+            right_hemisphere_value=atlas.get_right_hemisphere_value(),
+        )
 
-    calculate_volumes(
-        paths.registered_atlas_path,
-        paths.hemispheres_atlas_path,
-        atlas.get_structures_path(),
-        registration_config,
-        paths.volume_csv_path,
-        left_hemisphere_value=atlas.get_left_hemisphere_value(),
-        right_hemisphere_value=atlas.get_right_hemisphere_value(),
-    )
+    if boundaries:
+        if Path(paths.boundaries_file_path).exists():
+            logging.info("Boundary image exists, skipping")
+        else:
+            logging.info("Generating boundary image")
+            calc_boundaries(
+                paths.registered_atlas_path,
+                paths.boundaries_file_path,
+                atlas_config=registration_config,
+            )
+    else:
+        logging.info("Boundary image deselected, not generating")
 
     logging.info(
-        f"Segmentation finished.Results can be found here: "
+        f"Registration finished.Results can be found here: "
         f"{registration_output_folder}"
     )
 

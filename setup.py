@@ -14,6 +14,8 @@ requirements = [
     "brainio",
     "fancylog",
     "micrometa",
+    "napari",
+    "scikit-image",
 ]
 
 
@@ -41,6 +43,7 @@ setup(
         "console_scripts": [
             "amap = amap.main:main",
             "amap_download = amap.download.cli:main",
+            "amap_vis = amap.vis.vis:main",
         ]
     },
     url="https://github.com/SainsburyWellcomeCentre/amap-python",

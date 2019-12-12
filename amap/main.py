@@ -32,6 +32,7 @@ temp_dir_path = temp_dir.name
 def register_cli_parser():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
     parser = cli_parse(parser)
+    parser = visualisation_parser(parser)
     parser = registration_parse(parser)
     parser = pixel_parser(parser)
     parser = geometry_parser(parser)
@@ -167,6 +168,21 @@ def geometry_parser(parser):
         "then the atlas will be flipped to match the input data",
     )
 
+    return parser
+
+
+def visualisation_parser(parser):
+    vis_parser = parser.add_argument_group(
+        "Options relating to registration visualisation"
+    )
+
+    vis_parser.add_argument(
+        "--no-boundaries",
+        dest="no_boundaries",
+        action="store_true",
+        help="Do not precompute the outline images (if you don't want to"
+        " use amap_vis",
+    )
     return parser
 
 
@@ -335,6 +351,7 @@ def main():
         sort_input_file=args.sort_input_file,
         n_free_cpus=args.n_free_cpus,
         save_downsampled=not (args.no_save_downsampled),
+        boundaries=not (args.no_boundaries),
         debug=args.debug,
     )
 
