@@ -77,13 +77,7 @@ def main(
     run = Run(paths, boundaries=boundaries, debug=debug)
     atlas = Atlas(registration_config, dest_folder=registration_output_folder)
 
-    if (
-        Path(paths.registered_atlas_path).exists()
-        and Path(paths.registered_hemispheres_img_path).exists()
-        and Path(paths.inverse_control_point_file_path).exists()
-    ):
-        pass
-    else:
+    if run.preprocess:
         logging.info("Preprocessing data for registration")
         logging.info("Loading data")
 
@@ -142,47 +136,45 @@ def main(
                 load_parallel=load_parallel,
             )
 
-    registration_params = RegistrationParams(
-        registration_config,
-        affine_n_steps=affine_n_steps,
-        affine_use_n_steps=affine_use_n_steps,
-        freeform_n_steps=freeform_n_steps,
-        freeform_use_n_steps=freeform_use_n_steps,
-        bending_energy_weight=bending_energy_weight,
-        grid_spacing_x=grid_spacing_x,
-        smoothing_sigma_reference=smoothing_sigma_reference,
-        smoothing_sigma_floating=smoothing_sigma_floating,
-        histogram_n_bins_floating=histogram_n_bins_floating,
-        histogram_n_bins_reference=histogram_n_bins_reference,
-    )
-    brain_reg = BrainRegistration(
-        registration_config,
-        paths,
-        registration_params,
-        n_processes=n_processes,
-    )
+    if run.register:
+        logging.info("Registering")
 
-    if (
-        Path(paths.registered_atlas_path).exists()
-        and Path(paths.registered_hemispheres_img_path).exists()
-        and Path(paths.inverse_control_point_file_path).exists()
+    if any(
+        [
+            run.affine,
+            run.freeform,
+            run.segment,
+            run.hemispheres,
+            run.inverse_transform,
+        ]
     ):
-        logging.info(
-            "Affine and freeform registration allready completed, skipping"
+        registration_params = RegistrationParams(
+            registration_config,
+            affine_n_steps=affine_n_steps,
+            affine_use_n_steps=affine_use_n_steps,
+            freeform_n_steps=freeform_n_steps,
+            freeform_use_n_steps=freeform_use_n_steps,
+            bending_energy_weight=bending_energy_weight,
+            grid_spacing_x=grid_spacing_x,
+            smoothing_sigma_reference=smoothing_sigma_reference,
+            smoothing_sigma_floating=smoothing_sigma_floating,
+            histogram_n_bins_floating=histogram_n_bins_floating,
+            histogram_n_bins_reference=histogram_n_bins_reference,
         )
-    else:
-        if (
-            Path(paths.tmp__affine_registered_atlas_brain_path).exists()
-            or Path(paths.control_point_file_path).exists()
-        ):
-            logging.info("Registering")
-            logging.info("Starting affine registration")
-            brain_reg.register_affine()
-        else:
-            logging.info("Affine registration allready completed, skipping")
-        if run.freeform:
-            logging.info("Starting freeform registration")
-            brain_reg.register_freeform()
+        brain_reg = BrainRegistration(
+            registration_config,
+            paths,
+            registration_params,
+            n_processes=n_processes,
+        )
+
+    if run.affine:
+        logging.info("Starting affine registration")
+        brain_reg.register_affine()
+
+    if run.freeform:
+        logging.info("Starting freeform registration")
+        brain_reg.register_freeform()
 
     if run.segment:
         logging.info("Starting segmentation")

@@ -16,14 +16,47 @@ class Run:
         self._additional_images = additional_images
         self._debug = debug
 
-
+    # TODO: make this more specific
     @property
-    def freeform(self):
-        if self._control_point_exists:
-            logging.info("Freeform registration already completed, skipping.")
+    def preprocess(self):
+        if (
+            self._registered_atlas_exists
+            and self._registered_hemispheres_exists
+            and self._inverse_control_point_exists
+        ):
             return False
         else:
             return True
+
+    @property
+    def register(self):
+        if (
+            self._registered_atlas_exists
+            and self._registered_hemispheres_exists
+            and self._inverse_control_point_exists
+        ):
+            logging.info("Registration allready completed, skipping")
+            return False
+        else:
+            return True
+
+    @property
+    def affine(self):
+        if self.register and not(
+            self._affine_reg_brain_exists or self._control_point_exists
+        ):
+            return True
+        else:
+            logging.info("Affine registration allready completed, skipping")
+            return False
+
+    @property
+    def freeform(self):
+        if self.register and not self._control_point_exists:
+            return True
+        else:
+            logging.info("Freeform registration already completed, skipping.")
+            return False
 
     @property
     def segment(self):
