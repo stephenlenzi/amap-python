@@ -16,17 +16,10 @@ class Run:
         self._additional_images = additional_images
         self._debug = debug
 
-    @property
-    def affine(self):
-        if self.freeform or self.inverse_transform:
-            logging.info("Affine matrix already calculated, skipping")
-            return False
-        else:
-            return True
 
     @property
     def freeform(self):
-        if Path(self.paths.control_point_file_path).exists():
+        if self._control_point_exists:
             logging.info("Freeform registration already completed, skipping.")
             return False
         else:
@@ -85,6 +78,26 @@ class Run:
     @property
     def delete_temp(self):
         return self._debug
+
+    @property
+    def _downsampled_exists(self):
+        return self._exists(self.paths.downsampled_brain_path)
+
+    @property
+    def _downsampled_filtered_exists(self):
+        return self._exists(self.paths.tmp__downsampled_filtered)
+
+    @property
+    def _affine_exists(self):
+        return self._exists(self.paths.affine_matrix_path)
+
+    @property
+    def _affine_reg_brain_exists(self):
+        return self._exists(self.paths.tmp__affine_registered_atlas_brain_path)
+
+    @property
+    def _control_point_exists(self):
+        return self._exists(self.paths.control_point_file_path)
 
     @property
     def _inverse_control_point_exists(self):
