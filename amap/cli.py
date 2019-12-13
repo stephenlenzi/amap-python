@@ -323,10 +323,10 @@ def main():
         variables=[args],
         verbose=args.debug,
         log_header="AMAP LOG",
+        multiprocessing_aware=False
     )
 
     logging.info("Starting registration")
-
     register(
         args.registration_config,
         args.image_paths,
@@ -354,6 +354,7 @@ def main():
         boundaries=not (args.no_boundaries),
         debug=args.debug,
     )
+
 
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
 
