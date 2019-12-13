@@ -6,7 +6,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 from vispy.color import Colormap
 from brainio import brainio
-from amap.register.register import Paths
+from amap.utils.paths import Paths
 
 temp_dir = tempfile.TemporaryDirectory()
 temp_dir_path = temp_dir.name
