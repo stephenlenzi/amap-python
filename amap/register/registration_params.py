@@ -21,7 +21,6 @@ class RegistrationParams:
     def __init__(
         self,
         config_path,
-        output_folder="",
         affine_n_steps=6,
         affine_use_n_steps=5,
         freeform_n_steps=6,

@@ -41,7 +41,7 @@ setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "amap = amap.main:main",
+            "amap = amap.cli:main",
             "amap_download = amap.download.cli:main",
             "amap_vis = amap.vis.vis:main",
         ]
