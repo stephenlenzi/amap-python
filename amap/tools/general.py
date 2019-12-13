@@ -39,7 +39,7 @@ def delete_temp(directory, paths, prefix="tmp__"):
                 try:
                     os.remove(path)
                 except FileNotFoundError:
-                    logging.warning(
+                    logging.debug(
                         f"File: {path} not found, not deleting. "
                         f"Proceeding anyway."
                     )
