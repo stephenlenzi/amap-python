@@ -146,3 +146,13 @@ def get_text_lines(
     if return_lines is not None:
         lines = lines[return_lines]
     return lines
+
+
+def suppress_specific_logs(logger, message):
+    logger = logging.getLogger(logger)
+
+    class NoParsingFilter(logging.Filter):
+        def filter(self, record):
+            return not record.getMessage().startswith(message)
+
+    logger.addFilter(NoParsingFilter())
