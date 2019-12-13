@@ -20,6 +20,7 @@ flips = {
     "sagittal": (False, True, False),
 }
 
+
 def main(
     registration_config,
     target_brain_path,
@@ -73,7 +74,7 @@ def main(
     n_processes = system.get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
     paths = Paths(registration_output_folder)
-    run = Run(paths, boundaries=boundaries)
+    run = Run(paths, boundaries=boundaries, debug=debug)
     atlas = Atlas(registration_config, dest_folder=registration_output_folder)
 
     if (
@@ -195,8 +196,6 @@ def main(
         logging.info("Generating inverse (sample to atlas) transforms")
         brain_reg.generate_inverse_transforms()
 
-    logging.info("Registration complete")
-
     if run.volumes:
         logging.info("Calculating volumes of each brain area")
         calculate_volumes(
@@ -217,11 +216,11 @@ def main(
             atlas_config=registration_config,
         )
 
+    if run.delete_temp:
+        logging.info("Removing registration temp files")
+        general.delete_temp(paths.registration_output_folder, paths)
+
     logging.info(
         f"amap completed. Results can be found here: "
         f"{registration_output_folder}"
     )
-
-    if not debug:
-        logging.info("Removing registration temp files")
-        general.delete_temp(paths.registration_output_folder, paths)

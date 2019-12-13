@@ -58,8 +58,3 @@ def save_downsampled_image(
     logging.info("Saving downsampled image")
     brain.save(downsampled_brain_path)
     del brain
-
-
-
-
-

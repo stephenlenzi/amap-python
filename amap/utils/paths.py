@@ -1,5 +1,6 @@
 import os
 
+
 class Paths:
     """
     A single class to hold all file paths that amap may need. Any paths
