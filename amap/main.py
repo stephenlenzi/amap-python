@@ -1,8 +1,6 @@
 import logging
 import numpy as np
 
-from pathlib import Path
-
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration
 from amap.tools import general, system
