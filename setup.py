@@ -22,7 +22,7 @@ requirements = [
 
 setup(
     name="amap",
-    version="0.0.10a3",
+    version="0.0.10a4",
     description="Automated mouse atlas propagation",
     install_requires=requirements,
     extras_require={
