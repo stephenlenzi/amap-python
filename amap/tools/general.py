@@ -124,7 +124,12 @@ def remove_empty_string_list(str_list):
 
 
 def get_text_lines(
-    file, return_lines=None, rstrip=True, sort=False, remove_empty_lines=True
+    file,
+    return_lines=None,
+    rstrip=True,
+    sort=False,
+    remove_empty_lines=True,
+    encoding=None,
 ):
     """
     Return only the nth line of a text file
@@ -133,9 +138,11 @@ def get_text_lines(
     :param rstrip: Remove trailing characters
     :param sort: If true, naturally sort the data
     :param remove_empty_lines: If True, ignore empty lines
+    :param encoding: What encoding the text file has.
+    Default: None (platform dependent)
     :return: The nth line
     """
-    with open(file) as f:
+    with open(file, encoding=encoding) as f:
         lines = f.readlines()
     if rstrip:
         lines = [line.strip() for line in lines]

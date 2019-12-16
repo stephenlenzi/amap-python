@@ -13,21 +13,6 @@ cubes_dir = data_dir / "cubes"
 jabberwocky = data_dir / "general" / "jabberwocky.txt"
 jabberwocky_sorted = data_dir / "general" / "jabberwocky_sorted.txt"
 
-# sorted_cubes_dir = [
-#     "tests/data/cubes/pCellz222y2805x9962Ch1.tif",
-#     "tests/data/cubes/pCellz222y2805x9962Ch2.tif",
-#     "tests/data/cubes/pCellz258y3892x10559Ch1.tif",
-#     "tests/data/cubes/pCellz258y3892x10559Ch2.tif",
-#     "tests/data/cubes/pCellz413y2308x9391Ch1.tif",
-#     "tests/data/cubes/pCellz413y2308x9391Ch2.tif",
-#     "tests/data/cubes/pCellz416y2503x5997Ch1.tif",
-#     "tests/data/cubes/pCellz416y2503x5997Ch2.tif",
-#     "tests/data/cubes/pCellz418y5457x9489Ch1.tif",
-#     "tests/data/cubes/pCellz418y5457x9489Ch2.tif",
-#     "tests/data/cubes/pCellz433y4425x7552Ch1.tif",
-#     "tests/data/cubes/pCellz433y4425x7552Ch2.tif",
-# ]
-
 cubes = [
     "pCellz222y2805x9962Ch1.tif",
     "pCellz222y2805x9962Ch2.tif",
@@ -76,9 +61,10 @@ def test_get_sorted_file_paths():
     )
 
     # test text file
-    assert system.get_sorted_file_paths(jabberwocky) == tools.get_text_lines(
-        jabberwocky_sorted
-    )
+    # specifying utf8, as written on linux
+    assert system.get_sorted_file_paths(
+        jabberwocky, encoding="utf8"
+    ) == tools.get_text_lines(jabberwocky_sorted, encoding="utf8")
 
     # test unsupported
     with pytest.raises(NotImplementedError):
