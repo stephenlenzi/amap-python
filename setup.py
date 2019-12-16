@@ -42,6 +42,7 @@ setup(
     entry_points={
         "console_scripts": [
             "amap = amap.cli:main",
+            "amap_gui = amap.cli:gui",
             "amap_download = amap.download.cli:main",
             "amap_vis = amap.vis.vis:main",
         ]

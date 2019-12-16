@@ -310,7 +310,7 @@ def prep_registration(args):
     return args
 
 
-def main():
+def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
     args = define_pixel_sizes(args)
@@ -358,5 +358,22 @@ def main():
     logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
 
 
+def gui():
+    from gooey import Gooey
+    @Gooey(
+        program_name="amap",
+        default_size=(1000, 1000),
+        required_cols=1,
+        optional_cols=3,
+    )
+    def run_gui():
+        run()
+
+    run_gui()
+
+
+def main():
+    run()
+
 if __name__ == "__main__":
-    main()
+    run()
