@@ -34,7 +34,7 @@ by [email](mailto:adam.tyson@ucl.ac.uk?subject=amap) or by
 
 ### Basic usage
 ```bash
-amap -i /path/to/raw/data -o /path/to/output/directory -x 2 --y 2 -z 5
+amap -i /path/to/raw/data -o /path/to/output/directory -x 2 -y 2 -z 5
 ```
 
 ### Arguments
