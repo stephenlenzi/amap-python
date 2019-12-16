@@ -74,8 +74,8 @@ def main(
     n_processes = system.get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
     paths = Paths(registration_output_folder)
-    run = Run(paths, boundaries=boundaries, debug=debug)
     atlas = Atlas(registration_config, dest_folder=registration_output_folder)
+    run = Run(paths, atlas, boundaries=boundaries, debug=debug)
 
     if run.preprocess:
         logging.info("Preprocessing data for registration")

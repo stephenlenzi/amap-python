@@ -9,9 +9,15 @@ class Run:
     """
 
     def __init__(
-        self, paths, boundaries=True, additional_images=False, debug=False
+        self,
+        paths,
+        atlas,
+        boundaries=True,
+        additional_images=False,
+        debug=False,
     ):
-        self.paths = paths
+        self._paths = paths
+        self._atlas = atlas
         self._boundaries = boundaries
         self._additional_images = additional_images
         self._debug = debug
@@ -20,10 +26,14 @@ class Run:
     @property
     def preprocess(self):
         if (
-            self._registered_atlas_exists
-            and self._registered_hemispheres_exists
-            and self._inverse_control_point_exists
+            self._brain_exists
+            and self._atlas_exists
+            and self._hemispheres_exists
+            and self._downsampled_filtered_exists
         ):
+            logging.info(
+                "Downsampled data and reoriented atlas exists, skipping."
+            )
             return False
         else:
             return True
@@ -42,7 +52,7 @@ class Run:
 
     @property
     def affine(self):
-        if self.register and not(
+        if self.register and not (
             self._affine_reg_brain_exists or self._control_point_exists
         ):
             return True
@@ -113,44 +123,58 @@ class Run:
         return self._debug
 
     @property
+    def _atlas_exists(self):
+        return self._exists(self._atlas.get_dest_path("atlas_name"))
+
+    @property
+    def _brain_exists(self):
+        return self._exists(self._atlas.get_dest_path("brain_name"))
+
+    @property
+    def _hemispheres_exists(self):
+        return self._exists(self._atlas.get_dest_path("hemispheres_name"))
+
+    @property
     def _downsampled_exists(self):
-        return self._exists(self.paths.downsampled_brain_path)
+        return self._exists(self._paths.downsampled_brain_path)
 
     @property
     def _downsampled_filtered_exists(self):
-        return self._exists(self.paths.tmp__downsampled_filtered)
+        return self._exists(self._paths.tmp__downsampled_filtered)
 
     @property
     def _affine_exists(self):
-        return self._exists(self.paths.affine_matrix_path)
+        return self._exists(self._paths.affine_matrix_path)
 
     @property
     def _affine_reg_brain_exists(self):
-        return self._exists(self.paths.tmp__affine_registered_atlas_brain_path)
+        return self._exists(
+            self._paths.tmp__affine_registered_atlas_brain_path
+        )
 
     @property
     def _control_point_exists(self):
-        return self._exists(self.paths.control_point_file_path)
+        return self._exists(self._paths.control_point_file_path)
 
     @property
     def _inverse_control_point_exists(self):
-        return self._exists(self.paths.inverse_control_point_file_path)
+        return self._exists(self._paths.inverse_control_point_file_path)
 
     @property
     def _registered_atlas_exists(self):
-        return self._exists(self.paths.registered_atlas_path)
+        return self._exists(self._paths.registered_atlas_path)
 
     @property
     def _registered_hemispheres_exists(self):
-        return self._exists(self.paths.registered_hemispheres_img_path)
+        return self._exists(self._paths.registered_hemispheres_img_path)
 
     @property
     def _volumes_exist(self):
-        return self._exists(self.paths.volume_csv_path)
+        return self._exists(self._paths.volume_csv_path)
 
     @property
     def _boundaries_exist(self):
-        return self._exists(self.paths.boundaries_file_path)
+        return self._exists(self._paths.boundaries_file_path)
 
     @staticmethod
     def _exists(path):
