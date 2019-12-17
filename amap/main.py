@@ -1,345 +1,225 @@
-import os
 import logging
-import tempfile
-from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from datetime import datetime
-from fancylog import fancylog
+import numpy as np
+
 from pathlib import Path
 
+from amap.register.brain_processor import BrainProcessor
+from amap.register.brain_registration import BrainRegistration
+from amap.tools import general, system
+from amap.register.volume import calculate_volumes
+from amap.config.atlas import Atlas
+from amap.vis.boundaries import main as calc_boundaries
+from amap.register.registration_params import RegistrationParams
+from amap.register.tools import save_downsampled_image
+from amap.utils.paths import Paths
+from amap.utils.run import Run
 
-from micrometa.micrometa import SUPPORTED_METADATA_TYPES
-from amap.download.cli import atlas_parser, download_directory_parser
-
-
-from amap.register import register
-from amap.tools.general import (
-    check_positive_int,
-    check_positive_float,
-)
-from amap.tools.system import ensure_directory_exists
-from amap.tools.metadata import define_pixel_sizes
-from amap.tools import source_files
-from amap.config.config import get_config_ob
-from amap.download import atlas as atlas_download
-from amap.download.download import amend_cfg
-import amap as program_for_log
-
-
-temp_dir = tempfile.TemporaryDirectory()
-temp_dir_path = temp_dir.name
+flips = {
+    "horizontal": (True, True, False),
+    "coronal": (True, True, False),
+    "sagittal": (False, True, False),
+}
 
 
-def register_cli_parser():
-    parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
-    parser = cli_parse(parser)
-    parser = registration_parse(parser)
-    parser = pixel_parser(parser)
-    parser = geometry_parser(parser)
-    parser = misc_parse(parser)
-    parser = atlas_parser(parser)
-    parser = download_directory_parser(parser)
-
-    return parser
+def check_downsampled(registration_output_folder, name):
+    return Path(registration_output_folder, f"downsampled_{name}.nii").exists()
 
 
-def cli_parse(parser):
-    cli_parser = parser.add_argument_group("amap registration options")
-
-    cli_parser.add_argument(
-        "-i",
-        "--img-paths",
-        dest="image_paths",
-        type=str,
-        required=True,
-        help="Path to the directory of the image files. Can also be a text"
-        "file pointing to the files.",
-    )
-
-    cli_parser.add_argument(
-        "-o",
-        "--output-dir",
-        dest="registration_output_folder",
-        type=str,
-        required=True,
-        help="Directory to save the cubes into",
-    )
-
-    return parser
-
-
-def misc_parse(parser):
-    misc_parser = parser.add_argument_group("Misc options")
-    misc_parser.add_argument(
-        "--n-free-cpus",
-        dest="n_free_cpus",
-        type=check_positive_int,
-        default=2,
-        help="The number of CPU cores on the machine to leave "
-        "unused by the program to spare resources.",
-    )
-
-    misc_parser.add_argument(
-        "--debug",
-        dest="debug",
-        action="store_true",
-        help="Debug mode. Will increase verbosity of logging and save all "
-        "intermediate files for diagnosis of software issues.",
-    )
-    misc_parser.add_argument(
-        "--metadata",
-        dest="metadata",
-        type=Path,
-        help="Path to the metadata file. Supported formats are '{}'.".format(
-            SUPPORTED_METADATA_TYPES
-        ),
-    )
-    return parser
-
-
-def pixel_parser(parser):
-    pixel_opt_parser = parser.add_argument_group(
-        "Options to define pixel sizes of raw data"
-    )
-    pixel_opt_parser.add_argument(
-        "-x",
-        "--x-pixel-um",
-        dest="x_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the first "
-        "dimension, specified in um.",
-    )
-    pixel_opt_parser.add_argument(
-        "-y",
-        "--y-pixel-um",
-        dest="y_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the second "
-        "dimension, specified in um.",
-    )
-    pixel_opt_parser.add_argument(
-        "-z",
-        "--z-pixel-um",
-        dest="z_pixel_um",
-        type=check_positive_float,
-        help="Pixel spacing of the data in the third "
-        "dimension, specified in um.",
-    )
-    return parser
-
-
-def geometry_parser(parser):
-    geometry_opt_parser = parser.add_argument_group(
-        "Options to define size/shape/orientation of data"
-    )
-    geometry_opt_parser.add_argument(
-        "--orientation",
-        type=str,
-        choices=("coronal", "sagittal", "horizontal"),
-        default="coronal",
-        help="The orientation of the sample brain. "
-        "This is used to transpose the atlas"
-        "into the same orientation as the brain.",
-    )
-
-    # Warning: atlas reference
-    geometry_opt_parser.add_argument(
-        "--flip-x",
-        dest="flip_x",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-y",
-        dest="flip_y",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-    geometry_opt_parser.add_argument(
-        "--flip-z",
-        dest="flip_z",
-        action="store_true",
-        help="If the supplied data does not match the NifTI standard "
-        "orientation (origin is the most ventral, posterior, left voxel),"
-        "then the atlas will be flipped to match the input data",
-    )
-
-    return parser
-
-
-def registration_parse(parser):
-    registration_opt_parser = parser.add_argument_group("Registration options")
-    registration_opt_parser.add_argument(
-        "--registration-config",
-        dest="registration_config",
-        type=str,
-        help="To supply your own, custom registration configuration file.",
-    )
-    registration_opt_parser.add_argument(
-        "--sort-input-file",
-        dest="sort_input_file",
-        action="store_true",
-        help="If set to true, the input text file will be sorted using "
-        "natural sorting. This means that the file paths will be "
-        "sorted as would be expected by a human and "
-        "not purely alphabetically",
-    )
-
-    registration_opt_parser.add_argument(
-        "--no-save-downsampled",
-        dest="no_save_downsampled",
-        action="store_true",
-        help="Dont save the downsampled brain before filtering.",
-    )
-
-    registration_opt_parser.add_argument(
-        "--affine-n-steps",
-        dest="affine_n_steps",
-        type=check_positive_int,
-        default=6,
-    )
-    registration_opt_parser.add_argument(
-        "--affine-use-n-steps",
-        dest="affine_use_n_steps",
-        type=check_positive_int,
-        default=5,
-    )
-    registration_opt_parser.add_argument(
-        "--freeform-n-steps",
-        dest="freeform_n_steps",
-        type=check_positive_int,
-        default=6,
-    )
-    registration_opt_parser.add_argument(
-        "--freeform-use-n-steps",
-        dest="freeform_use_n_steps",
-        type=check_positive_int,
-        default=4,
-    )
-    registration_opt_parser.add_argument(
-        "--bending-energy-weight",
-        dest="bending_energy_weight",
-        type=check_positive_float,
-        default=0.95,
-    )
-    registration_opt_parser.add_argument(
-        "--grid-spacing-x", dest="grid_spacing_x", type=int, default=-10
-    )
-    registration_opt_parser.add_argument(
-        "--smoothing-sigma-reference",
-        dest="smoothing_sigma_reference",
-        type=float,
-        default=-1.0,
-    )
-    registration_opt_parser.add_argument(
-        "--smoothing-sigma-floating",
-        dest="smoothing_sigma_floating",
-        type=float,
-        default=-1.0,
-    )
-    registration_opt_parser.add_argument(
-        "--histogram-n-bins-floating",
-        dest="histogram_n_bins_floating",
-        type=check_positive_int,
-        default=128,
-    )
-    registration_opt_parser.add_argument(
-        "--histogram-n-bins-reference",
-        dest="histogram_n_bins_reference",
-        type=check_positive_int,
-        default=128,
-    )
-    return parser
-
-
-def check_atlas_install():
+def main(
+    registration_config,
+    target_brain_path,
+    registration_output_folder,
+    x_pixel_um=0.02,
+    y_pixel_um=0.02,
+    z_pixel_um=0.05,
+    orientation="coronal",
+    flip_x=False,
+    flip_y=False,
+    flip_z=False,
+    affine_n_steps=6,
+    affine_use_n_steps=5,
+    freeform_n_steps=6,
+    freeform_use_n_steps=4,
+    bending_energy_weight=0.95,
+    grid_spacing_x=-10,
+    smoothing_sigma_reference=-1.0,
+    smoothing_sigma_floating=-1.0,
+    histogram_n_bins_floating=128,
+    histogram_n_bins_reference=128,
+    n_free_cpus=2,
+    sort_input_file=False,
+    save_downsampled=True,
+    additional_images_downsample=None,
+    boundaries=True,
+    debug=False,
+):
     """
-    Checks whether the atlas directory exists, and whether it's empty or not.
-    :return: Whether the directory exists, and whether the files also exist
+        The main function that will perform the library calls and
+    register the atlas to the brain given on the CLI
+
+    :param registration_config:
+    :param target_brain_path:
+    :param registration_output_folder:
+    :param filtered_brain_path:
+    :param x_pixel_um:
+    :param y_pixel_um:
+    :param z_pixel_um:
+    :param orientation:
+    :param flip_x:
+    :param flip_y:
+    :param flip_z:
+    :param n_free_cpus:
+    :param sort_input_file:
+    :param save_downsampled:
+    :param additional_images_downsample: dict of
+    {image_name: image_to_be_downsampled}
+    :return:
     """
-    dir_exists = False
-    files_exist = False
-    cfg_file_path = source_files.source_custom_config()
-    if os.path.exists(cfg_file_path):
-        config_obj = get_config_ob(cfg_file_path)
-        atlas_conf = config_obj["atlas"]
-        atlas_directory = atlas_conf["base_folder"]
-        if os.path.exists(atlas_directory):
-            dir_exists = True
-            if not os.listdir(atlas_directory) == []:
-                files_exist = True
+    n_processes = system.get_num_processes(min_free_cpu_cores=n_free_cpus)
+    load_parallel = n_processes > 1
+    paths = Paths(registration_output_folder)
+    atlas = Atlas(registration_config, dest_folder=registration_output_folder)
+    run = Run(paths, atlas, boundaries=boundaries, debug=debug)
 
-    return dir_exists, files_exist
+    if run.preprocess:
+        logging.info("Preprocessing data for registration")
+        logging.info("Loading data")
 
-
-def prep_registration(args):
-    logging.info("Checking whether the atlas exists")
-    _, atlas_files_exist = check_atlas_install()
-    if not atlas_files_exist:
-        logging.warning("Atlas does not exist, downloading.")
-        if args.download_path is None:
-            args.download_path = os.path.join(temp_dir_path, "atlas.tar.gz")
-        atlas_download.main(args.atlas, args.install_path, args.download_path)
-        amend_cfg(
-            new_atlas_folder=args.install_path, atlas=args.atlas,
+        brain = BrainProcessor(
+            atlas,
+            target_brain_path,
+            registration_output_folder,
+            x_pixel_um,
+            y_pixel_um,
+            z_pixel_um,
+            original_orientation=orientation,
+            load_parallel=load_parallel,
+            sort_input_file=sort_input_file,
+            n_free_cpus=n_free_cpus,
         )
-    if args.registration_config is None:
-        args.registration_config = source_files.source_custom_config()
-    logging.debug("Making registration directory")
-    ensure_directory_exists(args.registration_output_folder)
 
-    return args
+        # reorients the atlas to the orientation of the sample
+        brain.swap_atlas_orientation_to_self()
 
+        # reorients atlas to the nifti (origin is the most ventral, posterior,
+        # left voxel) coordinate framework
 
-def main():
-    start_time = datetime.now()
-    args = register_cli_parser().parse_args()
-    args = define_pixel_sizes(args)
+        flip = flips[orientation]
+        brain.flip_atlas(flip)
 
-    args = prep_registration(args)
+        # flips if the input data doesnt match the nifti standard
+        brain.flip_atlas((flip_x, flip_y, flip_z))
 
-    fancylog.start_logging(
-        args.registration_output_folder,
-        program_for_log,
-        variables=[args],
-        verbose=args.debug,
-        log_header="AMAP LOG",
+        brain.atlas.save_all()
+        if save_downsampled:
+            brain.target_brain = brain.target_brain.astype(
+                np.uint16, copy=False
+            )
+            logging.info("Saving downsampled image")
+            brain.save(paths.downsampled_brain_path)
+
+        brain.filter()
+        logging.info("Saving filtered image")
+        brain.save(paths.tmp__downsampled_filtered)
+
+        del brain
+
+    if additional_images_downsample:
+        for name, image in additional_images_downsample.items():
+            if not check_downsampled(registration_output_folder, name):
+                save_downsampled_image(
+                    image,
+                    name,
+                    registration_output_folder,
+                    atlas,
+                    x_pixel_um=x_pixel_um,
+                    y_pixel_um=y_pixel_um,
+                    z_pixel_um=z_pixel_um,
+                    orientation=orientation,
+                    n_free_cpus=n_free_cpus,
+                    sort_input_file=sort_input_file,
+                    load_parallel=load_parallel,
+                )
+            else:
+                logging.info(f"Image: {name} already downsampled, skipping.")
+
+    if run.register:
+        logging.info("Registering")
+
+    if any(
+        [
+            run.affine,
+            run.freeform,
+            run.segment,
+            run.hemispheres,
+            run.inverse_transform,
+        ]
+    ):
+        registration_params = RegistrationParams(
+            registration_config,
+            affine_n_steps=affine_n_steps,
+            affine_use_n_steps=affine_use_n_steps,
+            freeform_n_steps=freeform_n_steps,
+            freeform_use_n_steps=freeform_use_n_steps,
+            bending_energy_weight=bending_energy_weight,
+            grid_spacing_x=grid_spacing_x,
+            smoothing_sigma_reference=smoothing_sigma_reference,
+            smoothing_sigma_floating=smoothing_sigma_floating,
+            histogram_n_bins_floating=histogram_n_bins_floating,
+            histogram_n_bins_reference=histogram_n_bins_reference,
+        )
+        brain_reg = BrainRegistration(
+            registration_config,
+            paths,
+            registration_params,
+            n_processes=n_processes,
+        )
+
+    if run.affine:
+        logging.info("Starting affine registration")
+        brain_reg.register_affine()
+
+    if run.freeform:
+        logging.info("Starting freeform registration")
+        brain_reg.register_freeform()
+
+    if run.segment:
+        logging.info("Starting segmentation")
+        brain_reg.segment()
+
+    if run.hemispheres:
+        logging.info("Segmenting hemispheres")
+        brain_reg.register_hemispheres()
+
+    if run.inverse_transform:
+        logging.info("Generating inverse (sample to atlas) transforms")
+        brain_reg.generate_inverse_transforms()
+
+    if run.volumes:
+        logging.info("Calculating volumes of each brain area")
+        calculate_volumes(
+            paths.registered_atlas_path,
+            paths.hemispheres_atlas_path,
+            atlas.get_structures_path(),
+            registration_config,
+            paths.volume_csv_path,
+            left_hemisphere_value=atlas.get_left_hemisphere_value(),
+            right_hemisphere_value=atlas.get_right_hemisphere_value(),
+        )
+
+    if run.boundaries:
+        logging.info("Generating boundary image")
+        calc_boundaries(
+            paths.registered_atlas_path,
+            paths.boundaries_file_path,
+            atlas_config=registration_config,
+        )
+
+    if run.delete_temp:
+        logging.info("Removing registration temp files")
+        general.delete_temp(paths.registration_output_folder, paths)
+
+    logging.info(
+        f"amap completed. Results can be found here: "
+        f"{registration_output_folder}"
     )
-
-    logging.info("Starting registration")
-
-    register.main(
-        args.registration_config,
-        args.image_paths,
-        args.registration_output_folder,
-        x_pixel_um=args.x_pixel_um,
-        y_pixel_um=args.y_pixel_um,
-        z_pixel_um=args.z_pixel_um,
-        orientation=args.orientation,
-        flip_x=args.flip_x,
-        flip_y=args.flip_y,
-        flip_z=args.flip_z,
-        affine_n_steps=args.affine_n_steps,
-        affine_use_n_steps=args.affine_use_n_steps,
-        freeform_n_steps=args.freeform_n_steps,
-        freeform_use_n_steps=args.freeform_use_n_steps,
-        bending_energy_weight=args.bending_energy_weight,
-        grid_spacing_x=args.grid_spacing_x,
-        smoothing_sigma_reference=args.smoothing_sigma_reference,
-        smoothing_sigma_floating=args.smoothing_sigma_floating,
-        histogram_n_bins_floating=args.histogram_n_bins_floating,
-        histogram_n_bins_reference=args.histogram_n_bins_reference,
-        sort_input_file=args.sort_input_file,
-        n_free_cpus=args.n_free_cpus,
-        save_downsampled=not (args.no_save_downsampled),
-        debug=args.debug,
-    )
-
-    logging.info("Finished. Total time taken: %s", datetime.now() - start_time)
-
-
-if __name__ == "__main__":
-    main()

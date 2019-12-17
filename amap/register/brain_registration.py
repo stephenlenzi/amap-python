@@ -42,9 +42,9 @@ class BrainRegistration(object):
             self.n_processes = None
 
         self.dataset_img_path = paths.tmp__downsampled_filtered
-        self.brain_of_atlas_img_path = self.reg_params.atlas_brain_path
-        self.atlas_img_path = self.reg_params.atlas_path
-        self.hemispheres_img_path = self.reg_params.hemispheres_path
+        self.brain_of_atlas_img_path = paths.brain_filtered
+        self.atlas_img_path = paths.annotations
+        self.hemispheres_img_path = paths.hemispheres
 
     def sanitise_inputs(self):
         """

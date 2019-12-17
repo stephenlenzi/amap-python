@@ -14,12 +14,19 @@ requirements = [
     "brainio",
     "fancylog",
     "micrometa",
+    "napari",
+    "scikit-image",
+    "luddite",
 ]
 
 
 setup(
     name="amap",
+<<<<<<< HEAD
     version="0.0.10",
+=======
+    version="0.0.10a4",
+>>>>>>> dev
     description="Automated mouse atlas propagation",
     install_requires=requirements,
     extras_require={
@@ -39,8 +46,10 @@ setup(
     include_package_data=True,
     entry_points={
         "console_scripts": [
-            "amap = amap.main:main",
+            "amap = amap.cli:main",
+            "amap_gui = amap.cli:gui",
             "amap_download = amap.download.cli:main",
+            "amap_vis = amap.vis.vis:main",
         ]
     },
     url="https://github.com/SainsburyWellcomeCentre/amap-python",

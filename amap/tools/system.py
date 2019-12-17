@@ -35,7 +35,7 @@ def ensure_directory_exists(directory):
         directory.mkdir(exist_ok=True)
 
 
-def get_sorted_file_paths(file_path, file_extension=None):
+def get_sorted_file_paths(file_path, file_extension=None, encoding=None):
     """
     Sorts file paths with numbers "naturally" (i.e. 1, 2, 10, a, b), not
     lexiographically (i.e. 1, 10, 2, a, b).
@@ -43,6 +43,8 @@ def get_sorted_file_paths(file_path, file_extension=None):
     or as a list.
     :param str file_extension: Optional file extension (if a directory
      is passed)
+    :param encoding: If opening a text file, what encoding it has.
+    Default: None (platform dependent)
     :return: Sorted list of file paths
     """
 
@@ -52,7 +54,7 @@ def get_sorted_file_paths(file_path, file_extension=None):
     # assume if not a list, is a file path
     file_path = Path(file_path)
     if file_path.suffix == ".txt":
-        return general.get_text_lines(file_path, sort=True)
+        return general.get_text_lines(file_path, sort=True, encoding=encoding)
     elif file_path.is_dir():
         if file_extension is None:
             file_path = glob.glob(os.path.join(file_path, "*"))

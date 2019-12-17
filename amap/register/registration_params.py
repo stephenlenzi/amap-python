@@ -21,7 +21,6 @@ class RegistrationParams:
     def __init__(
         self,
         config_path,
-        output_folder="",
         affine_n_steps=6,
         affine_use_n_steps=5,
         freeform_n_steps=6,
@@ -71,9 +70,9 @@ class RegistrationParams:
 
         # The atlas has been saved to the output folder
         atlas = Atlas(config_path)
-        self.atlas_path = atlas.get_path()
-        self.atlas_brain_path = atlas.get_brain_path()
-        self.hemispheres_path = atlas.get_hemispheres_path()
+        # self.atlas_path = atlas.get_path()
+        # self.atlas_brain_path = atlas.get_brain_path()
+        # self.hemispheres_path = atlas.get_hemispheres_path()
 
         pixel_sizes = atlas.get_pixel_sizes_from_config()
         self.atlas_x_pix_size = pixel_sizes["x"]
