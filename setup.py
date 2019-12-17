@@ -22,7 +22,7 @@ requirements = [
 
 setup(
     name="amap",
-    version="0.0.10a5",
+    version="0.0.10a6",
     description="Automated mouse atlas propagation",
     install_requires=requirements,
     extras_require={
@@ -35,7 +35,7 @@ setup(
             "pytest-cov",
             "pytest",
             "gitpython",
-            "coveralls"
+            "coveralls",
         ]
     },
     python_requires=">=3.6",
