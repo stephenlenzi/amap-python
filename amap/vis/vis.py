@@ -41,7 +41,11 @@ def load_prepare_image(path):
 
 
 def load_additional_downsampled_images(
-    viewer, amap_directory, paths, search_string="downsampled_"
+    viewer,
+    amap_directory,
+    paths,
+    search_string="downsampled_",
+    extension=".nii",
 ):
 
     amap_directory = Path(amap_directory)
@@ -56,7 +60,7 @@ def load_additional_downsampled_images(
                 f"Found additional downsampled image: {file.name}, "
                 f"adding to viewer"
             )
-            name = file.name.strip(search_string)
+            name = file.name.strip(search_string).strip(extension)
             viewer.add_image(
                 load_prepare_image(file), name=name,
             )
