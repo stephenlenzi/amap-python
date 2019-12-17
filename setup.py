@@ -16,7 +16,7 @@ requirements = [
     "micrometa",
     "napari",
     "scikit-image",
-    "luddite"
+    "luddite",
 ]
 
 

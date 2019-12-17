@@ -19,7 +19,6 @@ class Paths:
 
         self.annotations = self.make_reg_path("annotations.nii")
 
-
         self.downsampled_brain_path = self.make_reg_path("downsampled.nii")
         self.tmp__downsampled_filtered = self.make_reg_path(
             "downsampled_filtered.nii"
