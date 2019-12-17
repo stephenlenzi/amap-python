@@ -1,3 +1,7 @@
+[![Travis](https://img.shields.io/travis/com/SainsburyWellcomeCentre/amap-python?label=Travis%20CI)](
+    https://travis-ci.com/SainsburyWellcomeCentre/amap-python)
+[![Coverage Status](https://coveralls.io/repos/github/SainsburyWellcomeCentre/amap-python/badge.svg?branch=master)](https://coveralls.io/github/SainsburyWellcomeCentre/amap-python?branch=master)
+
 # amap-python
 Automated mouse atlas propagation
 
