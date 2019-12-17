@@ -1,6 +1,8 @@
 import logging
 import numpy as np
 
+from pathlib import Path
+
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration
 from amap.tools import general, system
@@ -17,6 +19,10 @@ flips = {
     "coronal": (True, True, False),
     "sagittal": (False, True, False),
 }
+
+
+def check_downsampled(registration_output_folder, name):
+    return Path(registration_output_folder, f"downsampled_{name}.nii").exists()
 
 
 def main(
@@ -120,19 +126,22 @@ def main(
 
     if additional_images_downsample:
         for name, image in additional_images_downsample.items():
-            save_downsampled_image(
-                image,
-                name,
-                registration_output_folder,
-                atlas,
-                x_pixel_um=x_pixel_um,
-                y_pixel_um=y_pixel_um,
-                z_pixel_um=z_pixel_um,
-                orientation=orientation,
-                n_free_cpus=n_free_cpus,
-                sort_input_file=sort_input_file,
-                load_parallel=load_parallel,
-            )
+            if not check_downsampled(registration_output_folder, name):
+                save_downsampled_image(
+                    image,
+                    name,
+                    registration_output_folder,
+                    atlas,
+                    x_pixel_um=x_pixel_um,
+                    y_pixel_um=y_pixel_um,
+                    z_pixel_um=z_pixel_um,
+                    orientation=orientation,
+                    n_free_cpus=n_free_cpus,
+                    sort_input_file=sort_input_file,
+                    load_parallel=load_parallel,
+                )
+            else:
+                logging.info(f"Image: {name} already downsampled, skipping.")
 
     if run.register:
         logging.info("Registering")

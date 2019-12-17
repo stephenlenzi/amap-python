@@ -47,24 +47,27 @@ def cli_parse(parser):
     cli_parser = parser.add_argument_group("amap registration options")
 
     cli_parser.add_argument(
-        "-i",
-        "--img-paths",
         dest="image_paths",
         type=str,
-        required=True,
         help="Path to the directory of the image files. Can also be a text"
         "file pointing to the files.",
     )
 
     cli_parser.add_argument(
-        "-o",
-        "--output-dir",
         dest="registration_output_folder",
         type=str,
-        required=True,
         help="Directory to save the cubes into",
     )
 
+    cli_parser.add_argument(
+        "-d",
+        "--downsample",
+        dest="downsample_images",
+        type=str,
+        nargs="+",
+        help="Paths to N additional channels to downsample to the same "
+        "coordinate space. ",
+    )
     return parser
 
 
@@ -306,8 +309,12 @@ def prep_registration(args):
         args.registration_config = source_files.source_custom_config()
     logging.debug("Making registration directory")
     ensure_directory_exists(args.registration_output_folder)
+    additional_images_downsample = {}
+    for idx, images in enumerate(args.downsample_images):
+        name = Path(images).name
+        additional_images_downsample[name] = images
 
-    return args
+    return args, additional_images_downsample
 
 
 def run():
@@ -315,7 +322,7 @@ def run():
     args = register_cli_parser().parse_args()
     args = define_pixel_sizes(args)
 
-    args = prep_registration(args)
+    args, additional_images_downsample = prep_registration(args)
 
     fancylog.start_logging(
         args.registration_output_folder,
@@ -352,6 +359,7 @@ def run():
         n_free_cpus=args.n_free_cpus,
         save_downsampled=not (args.no_save_downsampled),
         boundaries=not (args.no_boundaries),
+        additional_images_downsample=additional_images_downsample,
         debug=args.debug,
     )
 
@@ -360,6 +368,7 @@ def run():
 
 def gui():
     from gooey import Gooey
+
     @Gooey(
         program_name="amap",
         default_size=(1000, 1000),
@@ -374,6 +383,7 @@ def gui():
 
 def main():
     run()
+
 
 if __name__ == "__main__":
     run()

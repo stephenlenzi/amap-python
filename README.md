@@ -34,14 +34,14 @@ by [email](mailto:adam.tyson@ucl.ac.uk?subject=amap) or by
 
 ### Basic usage
 ```bash
-amap -i /path/to/raw/data -o /path/to/output/directory -x 2 -y 2 -z 5
+amap /path/to/raw/data /path/to/output/directory -x 2 -y 2 -z 5
 ```
 
 ### Arguments
 #### Mandatory
-* `-i` or `--img-paths` Path to the directory of the images. 
+* Path to the directory of the images. 
 Can also be a text file pointing to the files.  
- * `-o` or `--output-dir` Output directory for all intermediate and final 
+ * Output directory for all intermediate and final 
 results
 
 **Either**
