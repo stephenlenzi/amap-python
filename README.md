@@ -58,6 +58,9 @@ by [micrometa](https://github.com/adamltyson/micrometa) can be used).
   If both pixel sizes and metadata are provided, the command line arguments 
   will take priority.
 
+#### Additional options
+* `-d` or `--downsample` Paths to N additional channels to downsample to the 
+same coordinate space.
 
 Full command-line arguments are available with `amap -h`, but please 
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=amap) if you have any questions.
