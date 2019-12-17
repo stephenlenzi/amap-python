@@ -35,6 +35,7 @@ setup(
             "pytest-cov",
             "pytest",
             "gitpython",
+            "coveralls"
         ]
     },
     python_requires=">=3.6",
