@@ -309,10 +309,12 @@ def prep_registration(args):
         args.registration_config = source_files.source_custom_config()
     logging.debug("Making registration directory")
     ensure_directory_exists(args.registration_output_folder)
+
     additional_images_downsample = {}
-    for idx, images in enumerate(args.downsample_images):
-        name = Path(images).name
-        additional_images_downsample[name] = images
+    if args.downsample_images:
+        for idx, images in enumerate(args.downsample_images):
+            name = Path(images).name
+            additional_images_downsample[name] = images
 
     return args, additional_images_downsample
 
