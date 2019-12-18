@@ -64,8 +64,6 @@ def test_register(tmpdir):
     download_atlas(atlas_directory)
     test_config = generate_test_config(atlas_directory)
 
-    print(test_config)
-    print(atlas_directory)
     output_directory = os.path.join(atlas_directory, "output")
     amap_args = [
         "amap",
@@ -82,7 +80,7 @@ def test_register(tmpdir):
         "--registration-config",
         test_config,
     ]
-    print(amap_args)
+
     sys.argv = amap_args
     amap_run()
 
@@ -108,6 +106,12 @@ def test_register(tmpdir):
     assert get_text_lines(
         os.path.join(output_directory, "affine_matrix.txt")
     ) == get_text_lines(os.path.join(test_output_dir, "affine_matrix.txt"))
+
+    assert get_text_lines(
+        os.path.join(output_directory, "invert_affine_matrix.txt")
+    ) == get_text_lines(
+        os.path.join(test_output_dir, "invert_affine_matrix.txt")
+    )
 
     assert (
         (
