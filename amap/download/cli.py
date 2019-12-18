@@ -27,6 +27,12 @@ def download_directory_parser(parser):
         type=str,
         help="The path to download files into.",
     )
+    parser.add_argument(
+        "--no-amend-config",
+        dest="no_amend_config",
+        action="store_true",
+        help="Don't amend the config file",
+    )
     return parser
 
 
@@ -60,10 +66,10 @@ def main():
         args.download_path = os.path.join(temp_dir_path, "atlas.tar.gz")
     if not args.no_atlas:
         atlas.main(args.atlas, args.install_path, args.download_path)
-
-    amend_cfg(
-        new_atlas_folder=args.install_path, atlas=args.atlas,
-    )
+    if not args.no_amend_config:
+        amend_cfg(
+            new_atlas_folder=args.install_path, atlas=args.atlas,
+        )
 
 
 if __name__ == "__main__":
