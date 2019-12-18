@@ -319,12 +319,22 @@ def prep_registration(args):
     return args, additional_images_downsample
 
 
+def make_paths_absolute(args):
+    args.image_paths = os.path.abspath(args.image_paths)
+    args.registration_output_folder = os.path.abspath(
+        args.registration_output_folder
+    )
+    args.registration_config = os.path.abspath(args.registration_config)
+    return args
+
+
 def run():
     start_time = datetime.now()
     args = register_cli_parser().parse_args()
     args = define_pixel_sizes(args)
 
     args, additional_images_downsample = prep_registration(args)
+    args = make_paths_absolute(args)
 
     fancylog.start_logging(
         args.registration_output_folder,

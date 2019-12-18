@@ -44,7 +44,7 @@ def cli_parse(parser):
         type=str,
         nargs="+",
         help="Paths to N additional raw channels to view. Will only work if "
-             "using the raw image viewer.",
+        "using the raw image viewer.",
     )
 
     return parser
