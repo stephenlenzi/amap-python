@@ -2,11 +2,14 @@ import os
 import sys
 import pytest
 
-from amap.config.config import get_config_ob
+import pandas as pd
 
+from brainio.brainio import load_nii
+
+from amap.config.config import get_config_ob
+from amap.tools.general import get_text_lines
 from amap.download.cli import main as amap_download
 from amap.cli import run as amap_run
-from brainio.brainio import load_nii
 
 data_dir = os.path.join(os.getcwd(), "tests", "data", "brain",)
 test_output_dir = os.path.join(
@@ -101,6 +104,19 @@ def test_register(tmpdir):
 
     for image in image_list:
         are_images_equal(image, output_directory, test_output_dir)
+
+    assert get_text_lines(
+        os.path.join(output_directory, "affine_matrix.txt")
+    ) == get_text_lines(os.path.join(test_output_dir, "affine_matrix.txt"))
+
+    assert (
+        (
+            pd.read_csv(os.path.join(output_directory, "volumes.csv"))
+            == pd.read_csv(os.path.join(test_output_dir, "volumes.csv"))
+        )
+        .all()
+        .all()
+    )
 
 
 def are_images_equal(image_name, output_directory, test_output_directory):
