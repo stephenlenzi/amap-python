@@ -5,7 +5,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from datetime import datetime
 from fancylog import fancylog
 from pathlib import Path
-
+from shutil import copyfile
 
 from micrometa.micrometa import SUPPORTED_METADATA_TYPES
 from amap.download.cli import atlas_parser, download_directory_parser
@@ -294,6 +294,11 @@ def check_atlas_install():
     return dir_exists, files_exist
 
 
+def copy_registration_config(registration_config, output_directory):
+    destination = Path(output_directory, "config.conf")
+    copyfile(registration_config, destination)
+
+
 def prep_registration(args):
     logging.info("Checking whether the atlas exists")
     _, atlas_files_exist = check_atlas_install()
@@ -307,8 +312,14 @@ def prep_registration(args):
         )
     if args.registration_config is None:
         args.registration_config = source_files.source_custom_config()
+
     logging.debug("Making registration directory")
     ensure_directory_exists(args.registration_output_folder)
+
+    logging.debug("Copying registration config to output directory")
+    copy_registration_config(
+        args.registration_config, args.registration_output_folder
+    )
 
     additional_images_downsample = {}
     if args.downsample_images:

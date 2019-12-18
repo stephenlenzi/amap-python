@@ -152,13 +152,14 @@ def add_raw_image(viewer, image_path, name):
     viewer.add_image(images, name=name, opacity=0.6, blending="additive")
 
 
-def get_image_scales(log_entries):
+def get_image_scales(log_entries, config_file):
     """
     Returns the scaling from downsampled data to raw data
-    :param log_entries:
+    :param log_entries: Entries parsed from the log file
+    :param config_file: Path to the amap config file
     :return: Tuple of scaling factors
     """
-    config_obj = get_config_ob(log_entries["registration_config"])
+    config_obj = get_config_ob(config_file)
     atlas_conf = config_obj["atlas"]
     pixel_sizes = atlas_conf["pixel_size"]
     x_scale = float(pixel_sizes["x"]) / float(log_entries["x_pixel_um"])
@@ -179,8 +180,8 @@ def display_raw(viewer, args):
         " This may be slow."
     )
     log_entries = read_log_file(get_most_recent_log(args.amap_directory))
-
-    image_scales = get_image_scales(log_entries)
+    config_file = Path(args.amap_directory, "config.conf")
+    image_scales = get_image_scales(log_entries, config_file)
     add_raw_image(viewer, log_entries["image_paths"], name="Raw data")
 
     if args.raw_channels:
