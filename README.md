@@ -1,6 +1,9 @@
 [![Travis](https://img.shields.io/travis/com/SainsburyWellcomeCentre/amap-python?label=Travis%20CI)](
     https://travis-ci.com/SainsburyWellcomeCentre/amap-python)
 [![Coverage Status](https://coveralls.io/repos/github/SainsburyWellcomeCentre/amap-python/badge.svg?branch=master)](https://coveralls.io/github/SainsburyWellcomeCentre/amap-python?branch=master)
+[![DOI](https://zenodo.org/badge/225904061.svg)](https://zenodo.org/badge/latestdoi/225904061)
+
+
 
 # amap-python
 Automated mouse atlas propagation
@@ -68,6 +71,14 @@ same coordinate space.
 
 Full command-line arguments are available with `amap -h`, but please 
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=amap) if you have any questions.
+
+
+### Citing amap.
+
+If you find amap useful, and use it in your research, please cite the [original Nature Communications paper](https://www.nature.com/articles/ncomms11879) along with this repository:
+
+> Adam L. Tyson, Charly V. Rousseau, Christian J. Niedworok and Troy W. Margrie (2019). amap: automatic atlas propagation. [doi:10.5281/zenodo.3582162](https://zenodo.org/record/3582162)
+
 
 ### Visualisation
 amap has a built in visualisation function (built using [napari](https://github.com/napari/napari)).
