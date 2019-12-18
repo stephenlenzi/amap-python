@@ -7,12 +7,13 @@ default_atlas_name = "brain.nii"
 
 
 atlas_urls = {
-    "allen_2017": "https://gin.g-node.org/cellfinder/atlas/raw/master/allen2017.tar.gz"
+    "allen_2017": "https://gin.g-node.org/cellfinder/atlas/raw/master/allen2017.tar.gz",
+    "allen_2017_100um": "https://gin.g-node.org/cellfinder/atlas/raw/master/allen_2017_100um.tar.gz",
 }
 
-download_requirements_gb = {"allen_2017": 1.8}
+download_requirements_gb = {"allen_2017": 1.8, "allen_2017_100um": 0.003}
 
-extract_requirements_gb = {"allen_2017": 11.5}
+extract_requirements_gb = {"allen_2017": 11.5, "allen_2017_100um": 0.015}
 
 
 def main(atlas, atlas_dir, download_path):
