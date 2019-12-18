@@ -37,7 +37,7 @@ pip install amap
 amap was designed with generality in mind, so if anyone has different uses 
 (e.g. requires a different atlas, or the data is in a different format), please get in touch 
 by [email](mailto:adam.tyson@ucl.ac.uk?subject=amap) or by 
-[raising an issue](https://github.com/SainsburyWellcomeCentre/amap-python/issues).
+[raising an issue](https://github.com/SainsburyWellcomeCentre/amap-python/issues/new/choose).
 
 ### Basic usage
 ```bash
