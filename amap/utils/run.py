@@ -120,7 +120,7 @@ class Run:
 
     @property
     def delete_temp(self):
-        return self._debug
+        return not self._debug
 
     @property
     def _atlas_exists(self):
