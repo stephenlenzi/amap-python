@@ -79,25 +79,24 @@ def test_register(tmpdir):
         "0",
         "--registration-config",
         test_config,
+        "-d",
+        data_dir,
     ]
 
     sys.argv = amap_args
     amap_run()
 
     image_list = [
-        "affine_registered_atlas_brain.nii",
         "annotations.nii",
         "boundaries.nii",
         "brain_filtered.nii",
         "control_point_file.nii",
         "downsampled.nii",
-        "downsampled_filtered.nii",
-        "freeform_registered_atlas_brain.nii",
         "hemispheres.nii",
         "inverse_control_point_file.nii",
-        "inverse_freeform_registered_brain.nii",
         "registered_atlas.nii",
         "registered_hemispheres.nii",
+        "downsampled_brain.nii",
     ]
 
     for image in image_list:
