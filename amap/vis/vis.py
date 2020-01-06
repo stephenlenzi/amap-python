@@ -2,7 +2,7 @@ import napari
 import numpy as np
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from natsort import natsorted
-from napari.util.io import magic_imread
+from napari.utils.io import magic_imread
 
 from pathlib import Path
 from vispy.color import Colormap
