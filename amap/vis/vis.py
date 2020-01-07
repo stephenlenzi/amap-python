@@ -271,7 +271,7 @@ def main():
 
         else:
             raise FileNotFoundError(
-                f"The directory: '{args.amap_directory} does not "
+                f"The directory: '{args.amap_directory}' does not "
                 f"appear to be complete. Please ensure this is the correct "
                 f"directory and that amap has completed."
             )
