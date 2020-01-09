@@ -100,6 +100,6 @@ slow.
 Will only work if using the raw image viewer.
 
 N.B. If you have a high-resolution monitor, the scaling of the viewer may not work,
-this is a ([known napari issue](https://github.com/napari/napari/issues/367)).
+this is a [known napari issue](https://github.com/napari/napari/issues/367).
 
 ![amap_viewer](resources/amap_vis.gif)
