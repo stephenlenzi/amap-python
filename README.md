@@ -102,4 +102,4 @@ Will only work if using the raw image viewer.
 N.B. If you have a high-resolution monitor, the scaling of the viewer may not work,
 this is a ([known napari issue](https://github.com/napari/napari/issues/367)).
 
-![amap_viewer](https://user-images.githubusercontent.com/13147259/70794875-962c3180-1d96-11ea-8941-b74809955bf6.gif)
+![amap_viewer](resources/amap_vis.gif)
