@@ -106,9 +106,7 @@ def prepare_load_nii(nii_path, memory=False):
     :return: Numpy array in the correct coordinate space
     """
     nii_path = str(nii_path)
-    image = brainio.load_any(nii_path)
-    if memory:
-        image = np.array(image)
+    image = brainio.load_any(nii_path, as_numpy=memory)
     image = np.swapaxes(image, 2, 0)
     return image
 
