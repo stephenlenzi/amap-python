@@ -46,6 +46,12 @@ def cli_parse(parser):
         help="Paths to N additional raw channels to view. Will only work if "
         "using the raw image viewer.",
     )
+    cli_parser.add_argument(
+        "-m" "--memmap",
+        dest="memmap",
+        action="store_true",
+        help="Don't load data into RAM. ",
+    )
 
     return parser
 
@@ -92,14 +98,17 @@ def read_log_file(
     return entries
 
 
-def prepare_load_nii(nii_path):
+def prepare_load_nii(nii_path, memmap=False):
     """
     Transforms a nii file into the same coordinate space as the raw data
     :param nii_path: Path to the nii file
+    :param memmap: Load data as a memmap (not into memory)
     :return: Numpy array in the correct coordinate space
     """
     nii_path = str(nii_path)
     image = brainio.load_any(nii_path)
+    if not memmap:
+        image = np.array(image)
     image = np.swapaxes(image, 2, 0)
     return image
 
@@ -110,6 +119,7 @@ def load_additional_downsampled_images(
     paths,
     search_string="downsampled_",
     extension=".nii",
+    memmap=False,
 ):
     """
     Loads additional downsampled (i.e. from nii) images into napari viewer
@@ -119,6 +129,7 @@ def load_additional_downsampled_images(
     :param search_string: String that defines the images.
     Default: "downampled_"
     :param extension: File extension of the downsampled images. Default: ".nii"
+    :param memmap: Load data as a memmap (not into memory)
     """
 
     amap_directory = Path(amap_directory)
@@ -136,7 +147,7 @@ def load_additional_downsampled_images(
             )
             name = file.name.strip(search_string).strip(extension)
             viewer.add_image(
-                prepare_load_nii(file), name=name,
+                prepare_load_nii(file, memmap=memmap), name=name,
             )
 
 
@@ -202,32 +213,37 @@ def display_downsampled(viewer, args, paths):
     :return:
     """
     image_scales = (1, 1, 1)
-    load_additional_downsampled_images(viewer, args.amap_directory, paths)
+    load_additional_downsampled_images(
+        viewer, args.amap_directory, paths, memmap=args.memmap
+    )
 
     viewer.add_image(
-        prepare_load_nii(paths.downsampled_brain_path),
+        prepare_load_nii(paths.downsampled_brain_path, memmap=args.memmap),
         name="Downsampled raw data",
     )
 
     return image_scales
 
 
-def display_registration(viewer, atlas, boundaries, image_scales):
+def display_registration(
+    viewer, atlas, boundaries, image_scales, memmap=False
+):
     """
     Display results of the registration
     :param viewer: napari viewer object
     :param atlas: Annotations in sample space
     :param boundaries: Annotation boundaries in sample space
     :param tuple image_scales: Scaling of images from annotations -> data
+    :param memmap: Load data as a memmap (not into memory)
     """
     viewer.add_labels(
-        prepare_load_nii(atlas),
+        prepare_load_nii(atlas, memmap=memmap),
         name="Annotations",
         opacity=0.2,
         scale=image_scales,
     )
     viewer.add_image(
-        prepare_load_nii(boundaries),
+        prepare_load_nii(boundaries, memmap=memmap),
         name="Outlines",
         contrast_limits=[0, 1],
         colormap=("label_red", label_red),
@@ -267,6 +283,7 @@ def main():
                 paths.registered_atlas_path,
                 paths.boundaries_file_path,
                 image_scales,
+                memmap=args.memmap,
             )
 
         else:
