@@ -47,10 +47,10 @@ def cli_parse(parser):
         "using the raw image viewer.",
     )
     cli_parser.add_argument(
-        "-m" "--memmap",
-        dest="memmap",
+        "-m" "--memory",
+        dest="memory",
         action="store_true",
-        help="Don't load data into RAM. ",
+        help="Load data into RAM. ",
     )
 
     return parser
@@ -98,16 +98,16 @@ def read_log_file(
     return entries
 
 
-def prepare_load_nii(nii_path, memmap=False):
+def prepare_load_nii(nii_path, memory=False):
     """
     Transforms a nii file into the same coordinate space as the raw data
     :param nii_path: Path to the nii file
-    :param memmap: Load data as a memmap (not into memory)
+    :param memory: Load data into memory
     :return: Numpy array in the correct coordinate space
     """
     nii_path = str(nii_path)
     image = brainio.load_any(nii_path)
-    if not memmap:
+    if memory:
         image = np.array(image)
     image = np.swapaxes(image, 2, 0)
     return image
@@ -119,7 +119,7 @@ def load_additional_downsampled_images(
     paths,
     search_string="downsampled_",
     extension=".nii",
-    memmap=False,
+    memory=False,
 ):
     """
     Loads additional downsampled (i.e. from nii) images into napari viewer
@@ -129,7 +129,7 @@ def load_additional_downsampled_images(
     :param search_string: String that defines the images.
     Default: "downampled_"
     :param extension: File extension of the downsampled images. Default: ".nii"
-    :param memmap: Load data as a memmap (not into memory)
+    :param memory: Load data into memory
     """
 
     amap_directory = Path(amap_directory)
@@ -147,7 +147,7 @@ def load_additional_downsampled_images(
             )
             name = file.name.strip(search_string).strip(extension)
             viewer.add_image(
-                prepare_load_nii(file, memmap=memmap), name=name,
+                prepare_load_nii(file, memory=memory), name=name,
             )
 
 
@@ -214,11 +214,11 @@ def display_downsampled(viewer, args, paths):
     """
     image_scales = (1, 1, 1)
     load_additional_downsampled_images(
-        viewer, args.amap_directory, paths, memmap=args.memmap
+        viewer, args.amap_directory, paths, memory=args.memory
     )
 
     viewer.add_image(
-        prepare_load_nii(paths.downsampled_brain_path, memmap=args.memmap),
+        prepare_load_nii(paths.downsampled_brain_path, memory=args.memory),
         name="Downsampled raw data",
     )
 
@@ -226,7 +226,7 @@ def display_downsampled(viewer, args, paths):
 
 
 def display_registration(
-    viewer, atlas, boundaries, image_scales, memmap=False
+    viewer, atlas, boundaries, image_scales, memory=False
 ):
     """
     Display results of the registration
@@ -234,16 +234,16 @@ def display_registration(
     :param atlas: Annotations in sample space
     :param boundaries: Annotation boundaries in sample space
     :param tuple image_scales: Scaling of images from annotations -> data
-    :param memmap: Load data as a memmap (not into memory)
+    :param memory: Load data into memory
     """
     viewer.add_labels(
-        prepare_load_nii(atlas, memmap=memmap),
+        prepare_load_nii(atlas, memory=memory),
         name="Annotations",
         opacity=0.2,
         scale=image_scales,
     )
     viewer.add_image(
-        prepare_load_nii(boundaries, memmap=memmap),
+        prepare_load_nii(boundaries, memory=memory),
         name="Outlines",
         contrast_limits=[0, 1],
         colormap=("label_red", label_red),
@@ -254,6 +254,13 @@ def display_registration(
 def main():
     print("Starting amap viewer")
     args = parser().parse_args()
+
+    if not args.memory:
+        print(
+            "By default amap_vis does not load data into memory. "
+            "To speed up visualisation, use the '-m' flag. Be aware "
+            "this will make the viewer slower to open initially."
+        )
 
     paths = Paths(args.amap_directory)
     with napari.gui_qt():
@@ -283,7 +290,7 @@ def main():
                 paths.registered_atlas_path,
                 paths.boundaries_file_path,
                 image_scales,
-                memmap=args.memmap,
+                memory=args.memory,
             )
 
         else:
