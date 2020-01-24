@@ -8,6 +8,8 @@ from pathlib import Path
 from shutil import copyfile
 
 from micrometa.micrometa import SUPPORTED_METADATA_TYPES
+from imlib.system import ensure_directory_exists
+
 from amap.download.cli import atlas_parser, download_directory_parser
 
 
@@ -16,7 +18,6 @@ from amap.tools.general import (
     check_positive_int,
     check_positive_float,
 )
-from amap.tools.system import ensure_directory_exists
 from amap.tools.metadata import define_pixel_sizes
 from amap.tools import source_files
 from amap.config.config import get_config_ob

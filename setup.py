@@ -14,6 +14,7 @@ requirements = [
     "brainio>=0.0.10",
     "fancylog",
     "micrometa",
+    "imlib",
     "napari>=0.2.8",
     "scikit-image",
     "luddite",

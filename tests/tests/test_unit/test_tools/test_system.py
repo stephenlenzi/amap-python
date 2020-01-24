@@ -32,43 +32,11 @@ cubes = [
 sorted_cubes_dir = [os.path.join(str(cubes_dir), cube) for cube in cubes]
 
 
-def test_ensure_directory_exists():
-    home = os.path.expanduser("~")
-    exist_dir = os.path.join(home, ".amap_test_dir")
-    system.ensure_directory_exists(exist_dir)
-    assert os.path.exists(exist_dir)
-    os.rmdir(exist_dir)
-
-
 def write_n_random_files(n, dir, min_size=32, max_size=2048):
     sizes = random.sample(range(min_size, max_size), n)
     for size in sizes:
         with open(os.path.join(dir, str(size)), "wb") as fout:
             fout.write(os.urandom(size))
-
-
-def test_get_sorted_file_paths():
-    # test list
-    shuffled = sorted_cubes_dir.copy()
-    shuffle(shuffled)
-    assert system.get_sorted_file_paths(shuffled) == sorted_cubes_dir
-
-    # test dir
-    assert system.get_sorted_file_paths(cubes_dir) == sorted_cubes_dir
-    assert (
-        system.get_sorted_file_paths(cubes_dir, file_extension=".tif")
-        == sorted_cubes_dir
-    )
-
-    # test text file
-    # specifying utf8, as written on linux
-    assert system.get_sorted_file_paths(
-        jabberwocky, encoding="utf8"
-    ) == tools.get_text_lines(jabberwocky_sorted, encoding="utf8")
-
-    # test unsupported
-    with pytest.raises(NotImplementedError):
-        system.get_sorted_file_paths(shuffled[0])
 
 
 def test_check_path_in_dir():

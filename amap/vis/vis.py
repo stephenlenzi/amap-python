@@ -3,13 +3,13 @@ import numpy as np
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from natsort import natsorted
 from napari.utils.io import magic_imread
-
 from pathlib import Path
 from vispy.color import Colormap
 from brainio import brainio
+from imlib.system import get_sorted_file_paths
+
 from amap.utils.paths import Paths
 from amap.tools.general import get_text_lines
-from amap.tools.system import get_sorted_file_paths
 from amap.config.config import get_config_ob
 
 label_red = Colormap([[0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0]])
