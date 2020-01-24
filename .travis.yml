@@ -28,6 +28,7 @@ install:
 after_success:
 - coveralls
 script:
+- black ./ -l 79 --check
 - travis_wait 40 bash $TEST_CMD
 notifications:
   email:
