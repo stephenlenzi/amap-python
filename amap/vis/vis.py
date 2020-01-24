@@ -7,9 +7,9 @@ from pathlib import Path
 from vispy.color import Colormap
 from brainio import brainio
 from imlib.system import get_sorted_file_paths
+from imlib.system import get_text_lines
 
 from amap.utils.paths import Paths
-from amap.tools.general import get_text_lines
 from amap.config.config import get_config_ob
 
 label_red = Colormap([[0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0]])

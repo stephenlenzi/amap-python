@@ -14,20 +14,7 @@ import platform
 import shutil
 
 from tempfile import gettempdir
-from pathlib import Path
 from slurmio import slurmio
-
-
-def check_path_in_dir(file_path, directory_path):
-    """
-    Check if a file path is in a directory
-    :param file_path: Full path to a file
-    :param directory_path: Full path to a directory the file may be in
-    :return: True if the file is in the directory
-    """
-    directory = Path(directory_path)
-    parent = Path(file_path).parent
-    return parent == directory
 
 
 def get_num_processes(

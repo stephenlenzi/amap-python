@@ -5,9 +5,9 @@ import pytest
 import pandas as pd
 
 from brainio.brainio import load_nii
+from imlib.string import get_text_lines
 
 from amap.config.config import get_config_ob
-from amap.tools.general import get_text_lines
 from amap.download.cli import main as amap_download
 from amap.cli import run as amap_run
 

@@ -10,8 +10,9 @@ import numpy as np
 
 from tqdm import trange
 from brainio import brainio
+from imlib.image.scale import scale_and_convert_to_16_bits
 
-from amap.tools import general, image
+from amap.tools import image
 
 transpositions = {
     "horizontal": (1, 0, 2),
@@ -138,7 +139,7 @@ class BrainProcessor(object):
         for i in trange(brain.shape[-1], desc="filtering", unit="plane"):
             # OPTIMISE: see if in place better
             brain[..., i] = filter_plane_for_registration(brain[..., i])
-        brain = general.scale_and_convert_to_16_bits(brain)
+        brain = scale_and_convert_to_16_bits(brain)
         return brain
 
     def save(self, dest_path):
