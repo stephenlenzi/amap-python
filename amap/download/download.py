@@ -3,9 +3,9 @@ import shutil
 import tarfile
 import urllib.request
 
+from imlib.system import disk_free_gb
 from amap.config.config import get_config_ob
 from amap.tools import source_files
-from amap.tools.system import disk_free_gb
 
 
 class DownloadError(Exception):
