@@ -4,7 +4,7 @@ from pathlib import Path
 from math import isclose
 
 import amap.tools.metadata as meta
-from amap.tools.exceptions import CommandLineInputError
+from imlib.general.exceptions import CommandLineInputError
 
 data_dir = Path("tests", "data")
 metadata_dir = data_dir / "metadata"

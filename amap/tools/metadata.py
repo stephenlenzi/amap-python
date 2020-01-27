@@ -7,7 +7,7 @@ or read from the metadata using micrometa.
 
 """
 
-from amap.tools.exceptions import CommandLineInputError
+from imlib.general.exceptions import CommandLineInputError
 from argparse import ArgumentTypeError
 
 from micrometa.micrometa import get_acquisition_metadata

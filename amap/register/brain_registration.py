@@ -17,7 +17,7 @@ from imlib.general.system import (
     SafeExecuteCommandError,
 )
 
-from amap.tools.exceptions import RegistrationError, SegmentationError
+from imlib.general.exceptions import RegistrationError, SegmentationError
 
 
 class BrainRegistration(object):
