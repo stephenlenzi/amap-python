@@ -12,7 +12,7 @@ import logging
 from brainio import brainio
 
 
-from imlib.system import (
+from imlib.general.system import (
     safe_execute_command,
     SafeExecuteCommandError,
 )

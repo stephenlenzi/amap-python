@@ -6,8 +6,7 @@ from napari.utils.io import magic_imread
 from pathlib import Path
 from vispy.color import Colormap
 from brainio import brainio
-from imlib.system import get_sorted_file_paths
-from imlib.system import get_text_lines
+from imlib.general.system import get_sorted_file_paths, get_text_lines
 
 from amap.utils.paths import Paths
 from imlib.general.config import get_config_obj

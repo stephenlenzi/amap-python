@@ -2,7 +2,7 @@ import logging
 import numpy as np
 
 from pathlib import Path
-from imlib.system import get_num_processes, delete_temp
+from imlib.general.system import get_num_processes, delete_temp
 
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration

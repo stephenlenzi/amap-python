@@ -8,8 +8,8 @@ from pathlib import Path
 from shutil import copyfile
 
 from micrometa.micrometa import SUPPORTED_METADATA_TYPES
-from imlib.system import ensure_directory_exists
-from imlib.misc import check_positive_int, check_positive_float
+from imlib.general.system import ensure_directory_exists
+from imlib.general.misc import check_positive_int, check_positive_float
 from amap.download.cli import atlas_parser, download_directory_parser
 
 

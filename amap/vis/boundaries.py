@@ -2,10 +2,9 @@ import logging
 from brainio import brainio
 from skimage.segmentation import find_boundaries
 from imlib.image.scale import scale_and_convert_to_16_bits
-from imlib import nii
+from imlib.image import nii
 
 from amap.tools.source_files import source_custom_config
-import amap.tools.brain as brain_tools
 
 
 def main(registered_atlas, boundaries_out_path, atlas_config=None):
