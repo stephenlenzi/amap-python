@@ -2,11 +2,10 @@ import logging
 import numpy as np
 
 from pathlib import Path
-from imlib.system import get_num_processes
+from imlib.system import get_num_processes, delete_temp
 
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration
-from amap.tools import general
 from amap.register.volume import calculate_volumes
 from amap.config.atlas import Atlas
 from amap.vis.boundaries import main as calc_boundaries
@@ -218,7 +217,7 @@ def main(
 
     if run.delete_temp:
         logging.info("Removing registration temp files")
-        general.delete_temp(paths.registration_output_folder, paths)
+        delete_temp(paths.registration_output_folder, paths)
 
     logging.info(
         f"amap completed. Results can be found here: "

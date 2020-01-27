@@ -17,7 +17,7 @@ from amap.main import main as register
 
 from amap.tools.metadata import define_pixel_sizes
 from amap.tools import source_files
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 from amap.download import atlas as atlas_download
 from amap.download.download import amend_cfg
 import amap as program_for_log
@@ -281,7 +281,7 @@ def check_atlas_install():
     files_exist = False
     cfg_file_path = source_files.source_custom_config()
     if os.path.exists(cfg_file_path):
-        config_obj = get_config_ob(cfg_file_path)
+        config_obj = get_config_obj(cfg_file_path)
         atlas_conf = config_obj["atlas"]
         atlas_directory = atlas_conf["base_folder"]
         if os.path.exists(atlas_directory):

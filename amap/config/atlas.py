@@ -4,7 +4,7 @@ import numpy as np
 import nibabel as nb
 from brainio import brainio
 
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 
 transpositions = {
     "horizontal": (1, 0, 2),
@@ -23,7 +23,7 @@ class Atlas(object):
     """
 
     def __init__(self, config_path, dest_folder=""):
-        config_obj = get_config_ob(config_path)
+        config_obj = get_config_obj(config_path)
         self.atlas_conf = config_obj["atlas"]
 
         self.dest_folder = dest_folder

@@ -10,7 +10,7 @@ from imlib.system import get_sorted_file_paths
 from imlib.system import get_text_lines
 
 from amap.utils.paths import Paths
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 
 label_red = Colormap([[0.0, 0.0, 0.0, 0.0], [1.0, 1.0, 1.0, 1.0]])
 
@@ -168,7 +168,7 @@ def get_image_scales(log_entries, config_file):
     :param config_file: Path to the amap config file
     :return: Tuple of scaling factors
     """
-    config_obj = get_config_ob(config_file)
+    config_obj = get_config_obj(config_file)
     atlas_conf = config_obj["atlas"]
     pixel_sizes = atlas_conf["pixel_size"]
     x_scale = float(pixel_sizes["x"]) / float(log_entries["x_pixel_um"])

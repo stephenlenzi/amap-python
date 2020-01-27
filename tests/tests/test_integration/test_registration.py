@@ -7,7 +7,7 @@ import pandas as pd
 from brainio.brainio import load_nii
 from imlib.string import get_text_lines
 
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 from amap.download.cli import main as amap_download
 from amap.cli import run as amap_run
 
@@ -40,7 +40,7 @@ def download_atlas(directory):
 
 def generate_test_config(atlas_dir):
     config = os.path.join(os.getcwd(), "tests", "data", "config", "test.conf")
-    config_obj = get_config_ob(config)
+    config_obj = get_config_obj(config)
     atlas_conf = config_obj["atlas"]
     orig_base_directory = atlas_conf["base_folder"]
 

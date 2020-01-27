@@ -10,9 +10,8 @@ import pandas as pd
 import logging
 
 from brainio import brainio
-
-from amap.config.config import get_config_ob
-from amap.tools.general import initialise_df
+from imlib.pandas.misc import initialise_df
+from imlib.general.config import get_config_obj
 
 
 def load_structures_as_df(structures_file_path):
@@ -20,7 +19,7 @@ def load_structures_as_df(structures_file_path):
 
 
 def get_voxel_volume(registration_config):
-    config_obj = get_config_ob(registration_config)
+    config_obj = get_config_obj(registration_config)
     atlas_conf = config_obj["atlas"]
     atlas_pixel_sizes = atlas_conf["pixel_size"]
     x_pixel_size = float(atlas_pixel_sizes["x"])

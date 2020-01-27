@@ -4,7 +4,7 @@ import tarfile
 import urllib.request
 
 from imlib.system import disk_free_gb
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 from amap.tools import source_files
 
 
@@ -92,7 +92,7 @@ def amend_cfg(new_atlas_folder=None, atlas=None):
 
 
 def write_atlas_to_cfg(atlas_folder, atlas, orig_config, custom_config):
-    config_obj = get_config_ob(orig_config)
+    config_obj = get_config_obj(orig_config)
     atlas_conf = config_obj["atlas"]
     orig_base_directory = atlas_conf["base_folder"]
 
