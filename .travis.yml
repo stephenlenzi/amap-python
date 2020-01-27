@@ -23,12 +23,12 @@ before_install:
 install:
 - conda create -n test-environment python=$TRAVIS_PYTHON_VERSION
 - source activate test-environment
-- "$PIP_CMD"
+- $PIP_CMD
 - conda info -a
 after_success:
 - coveralls
 script:
-- black ./ -l 79 --check
+  - black ./ -l 79 --target-version py37 --check
 - travis_wait 40 bash $TEST_CMD
 notifications:
   email:
