@@ -14,6 +14,7 @@ requirements = [
     "brainio>=0.0.10",
     "fancylog",
     "micrometa",
+    "imlib",
     "napari>=0.2.8",
     "scikit-image",
     "luddite",
@@ -22,7 +23,7 @@ requirements = [
 
 setup(
     name="amap",
-    version="0.1.10",
+    version="0.1.11",
     description="Automated mouse atlas propagation",
     install_requires=requirements,
     extras_require={

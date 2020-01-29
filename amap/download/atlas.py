@@ -1,7 +1,7 @@
 import os
 
+from imlib.general.system import ensure_directory_exists
 from amap.download.download import download
-from amap.tools.system import ensure_directory_exists
 
 default_atlas_name = "brain.nii"
 

@@ -7,7 +7,7 @@ The module to handle all the registration options and program binaries
 
 
 from amap.config.atlas import Atlas
-from amap.config.config import get_config_ob
+from imlib.general.config import get_config_obj
 from amap.tools.source_files import get_niftyreg_binaries
 
 
@@ -32,7 +32,7 @@ class RegistrationParams:
         histogram_n_bins_floating=128,
         histogram_n_bins_reference=128,
     ):
-        self.config = get_config_ob(config_path)
+        self.config = get_config_obj(config_path)
         self.transform_program_path = self.__get_binary("transform")
         self.affine_reg_program_path = self.__get_binary("affine")
         self.freeform_reg_program_path = self.__get_binary("freeform")

@@ -2,10 +2,10 @@ import logging
 import numpy as np
 
 from pathlib import Path
+from imlib.general.system import get_num_processes, delete_temp
 
 from amap.register.brain_processor import BrainProcessor
 from amap.register.brain_registration import BrainRegistration
-from amap.tools import general, system
 from amap.register.volume import calculate_volumes
 from amap.config.atlas import Atlas
 from amap.vis.boundaries import main as calc_boundaries
@@ -75,7 +75,7 @@ def main(
     {image_name: image_to_be_downsampled}
     :return:
     """
-    n_processes = system.get_num_processes(min_free_cpu_cores=n_free_cpus)
+    n_processes = get_num_processes(min_free_cpu_cores=n_free_cpus)
     load_parallel = n_processes > 1
     paths = Paths(registration_output_folder)
     atlas = Atlas(registration_config, dest_folder=registration_output_folder)
@@ -217,7 +217,7 @@ def main(
 
     if run.delete_temp:
         logging.info("Removing registration temp files")
-        general.delete_temp(paths.registration_output_folder, paths)
+        delete_temp(paths.registration_output_folder, paths)
 
     logging.info(
         f"amap completed. Results can be found here: "

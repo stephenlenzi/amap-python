@@ -1,9 +1,8 @@
 import os
 
 from brainio import brainio
-
+from imlib.image.scale import scale_and_convert_to_16_bits
 from amap.tools import image as img_tools
-from amap.tools import general
 
 data_dir = os.path.join("tests", "data")
 
@@ -23,5 +22,5 @@ def test_pseudo_flatfield():
     flatfield_validation = brainio.load_any(flatfield_path)
 
     flatfield_test = img_tools.pseudo_flatfield(despeckled)
-    flatfield_test = general.scale_and_convert_to_16_bits(flatfield_test)
+    flatfield_test = scale_and_convert_to_16_bits(flatfield_test)
     assert (flatfield_validation == flatfield_test).all()

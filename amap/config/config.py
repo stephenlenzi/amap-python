@@ -1,6 +1,5 @@
 import os
 import platform
-from configobj import ConfigObj
 
 
 __os_folder_names = {"Linux": "linux_x64", "Darwin": "osX", "Windows": "win64"}
@@ -19,9 +18,3 @@ except KeyError:
 def get_binary(binaries_folder, program_name):
     path = os.path.join(binaries_folder, os_folder_name, program_name)
     return path
-
-
-def get_config_ob(config_path):
-    config_path = str(config_path)
-    config_obj = ConfigObj(config_path, encoding="UTF8", indent_type="    ",)
-    return config_obj

@@ -12,12 +12,12 @@ import logging
 from brainio import brainio
 
 
-from amap.tools.system import (
+from imlib.general.system import (
     safe_execute_command,
     SafeExecuteCommandError,
 )
 
-from amap.tools.exceptions import RegistrationError, SegmentationError
+from imlib.general.exceptions import RegistrationError, SegmentationError
 
 
 class BrainRegistration(object):

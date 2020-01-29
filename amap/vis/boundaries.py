@@ -1,10 +1,10 @@
 import logging
 from brainio import brainio
 from skimage.segmentation import find_boundaries
+from imlib.image.scale import scale_and_convert_to_16_bits
+from imlib.image import nii
 
-from amap.tools.general import scale_and_convert_to_16_bits
 from amap.tools.source_files import source_custom_config
-import amap.tools.brain as brain_tools
 
 
 def main(registered_atlas, boundaries_out_path, atlas_config=None):
@@ -41,7 +41,7 @@ class GetAtlas:
         self.get_transformation_matrix()
 
     def get_transformation_matrix(self):
-        self.transformation_matrix = brain_tools.get_transformation_matrix(
+        self.transformation_matrix = nii.get_transformation_matrix(
             self._atlas_config
         )
 
