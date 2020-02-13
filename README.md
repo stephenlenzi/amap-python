@@ -35,11 +35,7 @@ pip install amap
 ```
 
 ## Usage
-**N.B. Usage is currently fairly limited, only the following use cases are supported:** 
-* Data must be in a series of 2D coronal sections
-* Data must be registered to the 2017 Allen Institute reference adult mouse
-
-amap was designed with generality in mind, so if anyone has different uses 
+amap was designed with generality in mind, but is currently used for a single application. If anyone has different uses 
 (e.g. requires a different atlas, or the data is in a different format), please get in touch 
 by [email](mailto:adam.tyson@ucl.ac.uk?subject=amap) or by 
 [raising an issue](https://github.com/SainsburyWellcomeCentre/amap-python/issues/new/choose).
