@@ -28,6 +28,26 @@ This is a Python port of
 written in Java), which has been 
 [validated against human segmentation](https://www.nature.com/articles/ncomms11879).
 
+The actual registration is carried out by [NiftyReg](http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftyReg).
+
+## Info
+The aim of amap is to register the template brain
+ (e.g. from the [Allen Reference Atlas](https://mouse.brain-map.org/static/atlas))
+  to the sample image. Once this is complete, any other image in the template
+  space can be aligned with the sample (such as region annotations, for 
+  segmentation of the sample image). The template to sample transformation
+  can also be inverted, allowing sample images to be aligned in a common 
+  coordinate space.
+  
+To do this, the template and sample images are filtered, and then registered in 
+a three step process (reorientation, affine registration, and freeform 
+registration.) The resulting transform from template to standard space is then
+applied to the atlas. 
+ 
+Full details of the process are in the 
+[original paper](https://www.nature.com/articles/ncomms11879).
+![process](resources/reg_process.png)
+**Overview of the registration process**
 
 ## Installation
 ```bash
