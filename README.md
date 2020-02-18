@@ -30,7 +30,7 @@ written in Java), which has been
 
 The actual registration is carried out by [NiftyReg](http://cmictig.cs.ucl.ac.uk/wiki/index.php/NiftyReg).
 
-## Info
+## Details
 The aim of amap is to register the template brain
  (e.g. from the [Allen Reference Atlas](https://mouse.brain-map.org/static/atlas))
   to the sample image. Once this is complete, any other image in the template
@@ -46,7 +46,7 @@ applied to the atlas.
  
 Full details of the process are in the 
 [original paper](https://www.nature.com/articles/ncomms11879).
-![process](resources/reg_process.png)
+![process](https://raw.githubusercontent.com/SainsburyWellcomeCentre/amap-python/master/resources/reg_process.png)
 **Overview of the registration process**
 
 ## Installation
@@ -94,14 +94,14 @@ Full command-line arguments are available with `amap -h`, but please
 [get in touch](mailto:adam.tyson@ucl.ac.uk?subject=amap) if you have any questions.
 
 
-### Citing amap.
+## Citing amap.
 
 If you find amap useful, and use it in your research, please cite the [original Nature Communications paper](https://www.nature.com/articles/ncomms11879) along with this repository:
 
 > Adam L. Tyson, Charly V. Rousseau, Christian J. Niedworok and Troy W. Margrie (2019). amap: automatic atlas propagation. [doi:10.5281/zenodo.3582162](https://zenodo.org/record/3582162)
 
 
-### Visualisation
+## Visualisation
 amap has a built in visualisation function (built using [napari](https://github.com/napari/napari)).
 
 #### Usage
@@ -123,4 +123,4 @@ Will only work if using the raw image viewer.
 N.B. If you have a high-resolution monitor, the scaling of the viewer may not work,
 this is a [known napari issue](https://github.com/napari/napari/issues/367).
 
-![amap_viewer](resources/amap_vis.gif)
+![amap_viewer](https://raw.githubusercontent.com/SainsburyWellcomeCentre/amap-python/master/resources/amap_vis.gif)
