@@ -7,6 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/SainsburyWellcomeCentre/amap-python/badge.svg?branch=master)](https://coveralls.io/github/SainsburyWellcomeCentre/amap-python?branch=master)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=SainsburyWellcomeCentre/amap-python)](https://dependabot.com)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/python/black)
+[![Gitter](https://badges.gitter.im/cellfinder/amap.svg)](https://gitter.im/cellfinder/amap?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![DOI](https://zenodo.org/badge/225904061.svg)](https://zenodo.org/badge/latestdoi/225904061)
 
 
@@ -73,12 +74,12 @@ Can also be a text file pointing to the files.
 results
 
 **Either**
-* `-x` or `--x-pixel-mm` Pixel spacing of the data in the first dimension, 
-specified in mm.
-* `-y` or `--y-pixel-mm` Pixel spacing of the data in the second dimension, 
-specified in mm.
-* `-z` or `--z-pixel-mm` Pixel spacing of the data in the third dimension, 
-specified in mm.
+* `-x` or `--x-pixel-um` Pixel spacing of the data in the first dimension, 
+specified in um.
+* `-y` or `--y-pixel-um` Pixel spacing of the data in the second dimension, 
+specified in um.
+* `-z` or `--z-pixel-um` Pixel spacing of the data in the third dimension, 
+specified in um.
 
 **Or**
 * `--metadata` Metadata file containing pixel sizes (any format supported 

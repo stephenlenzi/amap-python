@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; amap  documentation</title>
+  <title>Visualisation &mdash; amap  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Citing amap." href="../about/citing.html" />
-    <link rel="prev" title="Visualisation" href="visualisation.html" /> 
+    <link rel="next" title="&lt;no title&gt;" href="troubleshooting.html" />
+    <link rel="prev" title="Usage" href="run.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,10 +80,15 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Visualisation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mandatory">Mandatory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-options">Additional options</a></li>
+</ul>
+</li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../about/citing.html">Citing amap.</a></li>
@@ -137,7 +142,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Visualisation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -154,7 +159,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
+  <div class="section" id="visualisation">
+<h1>Visualisation<a class="headerlink" href="#visualisation" title="Permalink to this headline">¶</a></h1>
+<p>amap has a built in visualisation function (built using <a class="reference external" href="https://github.com/napari/napari">napari</a>).</p>
+<div class="section" id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>amap_vis /path/to/amap/output/directory
+</pre></div>
+</div>
+</div>
+<div class="section" id="mandatory">
+<h2>Mandatory<a class="headerlink" href="#mandatory" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Path to amap output directory</p></li>
+</ul>
+</div>
+<div class="section" id="additional-options">
+<h2>Additional options<a class="headerlink" href="#additional-options" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-r</span></code> or <code class="docutils literal notranslate"><span class="pre">--raw</span></code>. Rather than viewing the downsampled data, view the raw data
+at full resolution. This will stream image planes as required, and so may be
+slow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-c</span></code> or <code class="docutils literal notranslate"><span class="pre">--raw-channels</span></code> Paths to N additional channels to view.
+Will only work if using the raw image viewer.</p></li>
+</ul>
+<p>N.B. If you have a high-resolution monitor, the scaling of the viewer may not work,
+this is a <a class="reference external" href="https://github.com/napari/napari/issues/367">known napari issue</a>.</p>
+<p><img alt="amap_viewer" src="https://raw.githubusercontent.com/SainsburyWellcomeCentre/amap-python/master/resources/amap_vis.gif" /></p>
+</div>
+</div>
+
 
            </div>
            
@@ -163,10 +197,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../about/citing.html" class="btn btn-neutral float-right" title="Citing amap." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="visualisation.html" class="btn btn-neutral float-left" title="Visualisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="run.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -6,7 +6,7 @@ Introduction:
 amap is python software for registration of brain templates to sample
 whole-brain microscopy datasets, and subsequent atlas-based segmentation
 from the
-`Margrie Lab <https://www.sainsburywellcome.org/web/people/troy-margrie/>`_
+`Margrie Lab <https://www.sainsburywellcome.org/web/groups/margrie-lab>`_
 and at the
 `Sainsbury Wellcome Centre <https://www.sainsburywellcome.org/web/>`_.
 
@@ -20,8 +20,6 @@ Install with:
 
 ``pip install amap``
 
-More details to come...
-====================================
 
 User Guide
 --------------
@@ -29,11 +27,19 @@ User Guide
 .. toctree::
    :maxdepth: 1
 
-   main/user_guide/install.md
+   main/user_guide/installation.md
    main/user_guide/run.md
+   main/user_guide/visualisation.md
    main/user_guide/troubleshooting.md
 
 
+About
+------------------
+.. toctree::
+   :maxdepth: 1
+   :glob:
+
+   main/about/*
 
 Developers
 ------------------

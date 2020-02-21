@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>&lt;no title&gt; &mdash; amap  documentation</title>
+  <title>Usage &mdash; amap  documentation</title>
   
 
   
@@ -35,8 +35,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="&lt;no title&gt;" href="troubleshooting.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="install.html" /> 
+    <link rel="next" title="Visualisation" href="visualisation.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,10 +80,33 @@
               
             
             
-              <!-- Local TOC -->
-              <div class="local-toc"><ul class="simple">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#arguments">Arguments</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mandatory">Mandatory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-options">Additional options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#input-data-options">Input data options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#misc-options">Misc options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#advanced-options">Advanced options</a></li>
 </ul>
-</div>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#visualisation-options">Visualisation options</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualisation.html">Visualisation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../about/citing.html">Citing amap.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/release_notes.html">Releases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/roadmap.html">Future Plans</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../dev/CONTRIBUTING.html">Contributing</a></li>
+</ul>
+
             
           
         </div>
@@ -127,7 +150,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>&lt;no title&gt;</li>
+      <li>Usage</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -144,7 +167,104 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  
+  <div class="section" id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>amap /path/to/raw/data /path/to/output/directory -x <span class="m">2</span> -y <span class="m">2</span> -z <span class="m">5</span>
+</pre></div>
+</div>
+<div class="section" id="arguments">
+<h2>Arguments<a class="headerlink" href="#arguments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mandatory">
+<h3>Mandatory<a class="headerlink" href="#mandatory" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Path to the directory of the images.
+Can also be a text file pointing to the files.</p></li>
+<li><p>Output directory for all intermediate and final
+results</p></li>
+</ul>
+<p><strong>Either</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-x</span></code> or <code class="docutils literal notranslate"><span class="pre">--x-pixel-um</span></code> Pixel spacing of the data in the first dimension,
+specified in um.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-y</span></code> or <code class="docutils literal notranslate"><span class="pre">--y-pixel-um</span></code> Pixel spacing of the data in the second dimension,
+specified in um.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-z</span></code> or <code class="docutils literal notranslate"><span class="pre">--z-pixel-um</span></code> Pixel spacing of the data in the third dimension,
+specified in um.</p></li>
+</ul>
+<p><strong>Or</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--metadata</span></code> Metadata file containing pixel sizes (any format supported
+by <a class="reference external" href="https://github.com/adamltyson/micrometa">micrometa</a> can be used).
+If both pixel sizes and metadata are provided, the command line arguments
+will take priority.</p></li>
+</ul>
+</div>
+<div class="section" id="additional-options">
+<h3>Additional options<a class="headerlink" href="#additional-options" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-d</span></code> or <code class="docutils literal notranslate"><span class="pre">--downsample</span></code> Paths to N additional channels to downsample to the
+same coordinate space.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-save-downsampled</span></code> Dont save the downsampled brain before filtering.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--registration-config</span></code> To supply your own, custom registration configuration file</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--sort-input-file</span></code> If set to true, the input text file will be sorted using
+natural sorting. This means that the file paths will be
+sorted as would be expected by a human and
+not purely alphabetically</p></li>
+</ul>
+<div class="section" id="input-data-options">
+<h4>Input data options<a class="headerlink" href="#input-data-options" title="Permalink to this headline">¶</a></h4>
+<p>If the supplied data does not match the NifTI standard
+orientation (origin is the most ventral, posterior, left voxel),
+then the atlas can be flipped to match the input data:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--flip-x</span></code> Flip the sample brain along the first dimension for
+atlas registration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flip-y</span></code> Flip the sample brain along the second dimension for
+atlas registration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flip-z</span></code> Flip the sample brain along the third dimension for
+atlas registration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--orientation</span></code> The orientation of the sample brain <code class="docutils literal notranslate"><span class="pre">coronal</span></code>, <code class="docutils literal notranslate"><span class="pre">saggital</span></code>
+or <code class="docutils literal notranslate"><span class="pre">horizontal</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="misc-options">
+<h4>Misc options<a class="headerlink" href="#misc-options" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--n-free-cpus</span></code> The number of CPU cores on the machine to leave unused by the program to spare resources.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--debug</span></code> Debug mode. Will increase verbosity of logging and save all intermediate files for diagnosis of software issues.</p></li>
+</ul>
+</div>
+<div class="section" id="advanced-options">
+<h4>Advanced options<a class="headerlink" href="#advanced-options" title="Permalink to this headline">¶</a></h4>
+<p><strong>Affine registration</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--affine-n-steps</span></code> Registration starts with further downsampled versions of the original data to optimize the global fit of the result and prevent “getting stuck” in local minima of the similarity function. This parameter determines how many downsampling steps are being performed, with each step halving the data size along each dimension.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--affine-use-n-steps</span></code> Determines how many of the downsampling steps defined by <code class="docutils literal notranslate"><span class="pre">--affine-n-steps</span></code> will have their registration computed. The combination <code class="docutils literal notranslate"><span class="pre">--affine-n-steps</span> <span class="pre">3</span> <span class="pre">--affine-use-n-steps</span> <span class="pre">2</span></code> will e.g. calculate 3 downsampled steps, each of which is half the size of the previous one but only perform the registration on the 2 smallest resampling steps, skipping the full resolution data. Can be used to save time if running the full resolution doesn’t result in noticeable improvements.</p></li>
+</ul>
+<p><strong>Freeform registration</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--freeform-n-steps</span></code> Registration starts with further downsampled versions of the original data to optimize the global fit of the result and prevent “getting stuck” in local minima of the similarity function. This parameter determines how many downsampling steps are being performed, with each step halving the data size along each dimension.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--freeform-use-n-steps</span></code> Determines how many of the downsampling steps defined by <code class="docutils literal notranslate"><span class="pre">--freeform-n-steps</span></code> will have their registration computed. The combination <code class="docutils literal notranslate"><span class="pre">--freeform-n-steps</span> <span class="pre">3</span> <span class="pre">--freeform-use-n-steps</span> <span class="pre">2</span></code> will e.g. calculate 3 downsampled steps, each of which is half the size of the previous one but only perform the registration on the 2 smallest resampling steps, skipping the full resolution data. Can be used to save time if running the full resolution doesn’t result in noticeable improvements.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--bending-energy-weight</span></code> Sets the bending energy, which is the coefficient of the penalty term, preventing the freeform registration from overfitting. The range is between 0 and 1 (exclusive) with higher values leading to more restriction of the registration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--grid-spacing</span></code> Sets the control point grid spacing in x, y &amp; z. Positive values are interpreted as real values in mm, negative values are interpreted as the (positive) distances in voxels. Smaller grid spacing allows for more local deformations but increases the risk of overfitting.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--smoothing-sigma-floating</span></code> Adds a gaussian smoothing to the floating image (the one being registered), with the sigma defined by the number. Positive values are interpreted as real values in mm, negative values are interpreted as distance in voxels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--smoothing-sigma-reference</span></code> Adds a gaussian smoothing to the reference (the one being registered to) image, with the sigma defined by the number. Positive values are interpreted as real values in mm, negative values are interpreted as distance in voxels.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--histogram-n-bins-floating</span></code> Number of bins used for the generation of the histograms used for the calculation of Normalized Mutual Information on the floating image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--histogram-n-bins-reference</span></code> Number of bins used for the generation of the histograms used for the calculation of Normalized Mutual Information on the reference image</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="visualisation-options">
+<h3>Visualisation options<a class="headerlink" href="#visualisation-options" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-boundaries</span></code> Do not precompute the outline images
+(if you don’t want to use amap_vis)</p></li>
+</ul>
+<p>Full command-line arguments are available with <code class="docutils literal notranslate"><span class="pre">amap</span> <span class="pre">-h</span></code></p>
+</div>
+</div>
+</div>
+
 
            </div>
            
@@ -153,10 +273,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="troubleshooting.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="visualisation.html" class="btn btn-neutral float-right" title="Visualisation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

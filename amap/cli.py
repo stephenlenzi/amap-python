@@ -137,7 +137,7 @@ def geometry_parser(parser):
         choices=("coronal", "sagittal", "horizontal"),
         default="coronal",
         help="The orientation of the sample brain. "
-        "This is used to transpose the atlas"
+        "This is used to transpose the atlas "
         "into the same orientation as the brain.",
     )
 
@@ -241,7 +241,7 @@ def registration_parse(parser):
         default=0.95,
     )
     registration_opt_parser.add_argument(
-        "--grid-spacing-x", dest="grid_spacing_x", type=int, default=-10
+        "--grid-spacing", dest="grid_spacing", type=int, default=-10
     )
     registration_opt_parser.add_argument(
         "--smoothing-sigma-reference",
@@ -369,7 +369,7 @@ def run():
         freeform_n_steps=args.freeform_n_steps,
         freeform_use_n_steps=args.freeform_use_n_steps,
         bending_energy_weight=args.bending_energy_weight,
-        grid_spacing_x=args.grid_spacing_x,
+        grid_spacing=args.grid_spacing,
         smoothing_sigma_reference=args.smoothing_sigma_reference,
         smoothing_sigma_floating=args.smoothing_sigma_floating,
         histogram_n_bins_floating=args.histogram_n_bins_floating,

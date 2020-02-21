@@ -1,4 +1,4 @@
-__version__ = "0.1.14"
+__version__ = "0.1.15"
 __author__ = "Adam Tyson, Charly Rousseau, Christian Niedworok"
 __license__ = "GPL-3.0"
 __name__ = "amap"

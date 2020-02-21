@@ -26,7 +26,7 @@ class RegistrationParams:
         freeform_n_steps=6,
         freeform_use_n_steps=4,
         bending_energy_weight=0.95,
-        grid_spacing_x=-10,
+        grid_spacing=-10,
         smoothing_sigma_reference=-1.0,
         smoothing_sigma_floating=-1.0,
         histogram_n_bins_floating=128,
@@ -46,7 +46,7 @@ class RegistrationParams:
         self.freeform_reg_pyramid_steps = ("-ln", freeform_n_steps)
         self.freeform_reg_used_pyramid_steps = ("-lp", freeform_use_n_steps)
 
-        self.freeform_reg_grid_spacing_x = ("-sx", grid_spacing_x)
+        self.freeform_reg_grid_spacing = ("-sx", grid_spacing)
 
         self.bending_energy_penalty_weight = ("-be", bending_energy_weight)
 
@@ -103,7 +103,7 @@ class RegistrationParams:
         freeform_params = [
             self.freeform_reg_pyramid_steps,
             self.freeform_reg_used_pyramid_steps,
-            self.freeform_reg_grid_spacing_x,
+            self.freeform_reg_grid_spacing,
             self.bending_energy_penalty_weight,
             self.reference_image_smoothing_sigma,
             self.floating_image_smoothing_sigma,

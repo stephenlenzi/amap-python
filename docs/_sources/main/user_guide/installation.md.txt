@@ -2,6 +2,7 @@
 
 #### Set up conda environment and install dependencies
 **Recommended, allthough not necessary**
+
 Conda environments are used to isolate python versions and packages.
 
 **Once conda environment is set up, everything must be carried out 
