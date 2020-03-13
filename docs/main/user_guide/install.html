@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation &mdash; amap  documentation</title>
+  <title>&lt;no title&gt; &mdash; amap  documentation</title>
   
 
   
@@ -34,7 +34,9 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="run.html" />
+    <link rel="prev" title="amap" href="../../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -78,17 +80,10 @@
               
             
             
-              <ul>
-<li class="toctree-l1"><a class="reference internal" href="run.html">Usage</a></li>
+              <!-- Local TOC -->
+              <div class="local-toc"><ul class="simple">
 </ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../about/release_notes.html">Releases</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../about/roadmap.html">Future Plans</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../dev/CONTRIBUTING.html">Contributing</a></li>
-</ul>
-
+</div>
             
           
         </div>
@@ -132,7 +127,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li>Installation</li>
+      <li>&lt;no title&gt;</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -149,66 +144,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="set-up-conda-environment-and-install-dependencies">
-<h2>Set up conda environment and install dependencies<a class="headerlink" href="#set-up-conda-environment-and-install-dependencies" title="Permalink to this headline">¶</a></h2>
-<p><strong>Recommended, allthough not necessary</strong>
-Conda environments are used to isolate python versions and packages.</p>
-<p><strong>Once conda environment is set up, everything must be carried out
-in this environment</strong></p>
-<ul class="simple">
-<li><p>Download miniconda installation file
-<a class="reference external" href="https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh">here</a></p></li>
-<li><p>Run miniconda installation file, e.g.:</p></li>
-</ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span> <span class="o">~/</span><span class="n">Downloads</span><span class="o">/</span><span class="n">Miniconda3</span><span class="o">-</span><span class="n">latest</span><span class="o">-</span><span class="n">Linux</span><span class="o">-</span><span class="n">x86_64</span><span class="o">.</span><span class="n">sh</span>
-</pre></div>
-</div>
-<ul class="simple">
-<li><p>Create and activate new minimal conda environment</p></li>
-</ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create --name amap <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.7
-conda activate amap
-</pre></div>
-</div>
-</div>
-<div class="section" id="install-amap">
-<h2>Install amap<a class="headerlink" href="#install-amap" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install amap
-</pre></div>
-</div>
-<p><strong>If you use a conda environment, remember to activate it
-(<code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">amap</span></code>) before using amap.</strong></p>
-</div>
-<div class="section" id="download-atlas-optional">
-<h2>Download atlas (optional)<a class="headerlink" href="#download-atlas-optional" title="Permalink to this headline">¶</a></h2>
-<p>When amap runs, the appropriate reference atlas will be downloaded (if not previously done so). If you would
-like to download in advance to save time (or if you will not have an internet
-connection) please use <code class="docutils literal notranslate"><span class="pre">amap_download</span></code>.</p>
-<p>Currently, the only supported atlas is the Allen reference mouse
-brain, originally from <a class="reference external" href="http://help.brain-map.org/display/mouseconnectivity/API#API-DownloadAtlas">here</a>.
-The atlas will download into <code class="docutils literal notranslate"><span class="pre">./amap/atlas</span></code>.</p>
-<p>In the future, other atlases will be available, and you will be able to choose
-which is downloaded.</p>
-<p>If you want to modify the am amap download, use:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">--atlas-install-path</span></code> Supply a path to download the atlas elsewhere. This
-should also update the default <code class="docutils literal notranslate"><span class="pre">registration.conf</span></code> file so that the correct
-atlas is sourced. Alternatively, use this command to tell amap where an
-existing atlas is, to save it being downloaded twice. (Requires 20GB
-disk space)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">--atlas</span> <span class="pre">download</span> <span class="pre">path</span></code> The path to download the atlas into.
-(Requires 1.2GB disk space). Defaults to <code class="docutils literal notranslate"><span class="pre">/tmp</span></code>.</p></li>
-</ul>
-</div>
-</div>
-
+  
 
            </div>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="run.html" class="btn btn-neutral float-right" title="&lt;no title&gt;" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../../index.html" class="btn btn-neutral float-left" title="amap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
