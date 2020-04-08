@@ -12,10 +12,10 @@ from imlib.general.system import ensure_directory_exists
 from imlib.general.numerical import check_positive_int, check_positive_float
 from imlib.image.metadata import define_pixel_sizes
 from imlib.general.config import get_config_obj
+from imlib.source import source_files
 
 from amap.download.cli import atlas_parser, download_directory_parser
 from amap.main import main as register
-from amap.tools import source_files
 from amap.download import atlas as atlas_download
 from amap.download.download import amend_cfg
 import amap as program_for_log
