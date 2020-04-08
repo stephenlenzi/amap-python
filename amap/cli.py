@@ -277,7 +277,7 @@ def check_atlas_install():
     """
     dir_exists = False
     files_exist = False
-    cfg_file_path = source_files.source_custom_config()
+    cfg_file_path = source_files.source_custom_config_amap()
     if os.path.exists(cfg_file_path):
         config_obj = get_config_obj(cfg_file_path)
         atlas_conf = config_obj["atlas"]
@@ -307,7 +307,7 @@ def prep_registration(args):
             new_atlas_folder=args.install_path, atlas=args.atlas,
         )
     if args.registration_config is None:
-        args.registration_config = source_files.source_custom_config()
+        args.registration_config = source_files.source_custom_config_amap()
 
     logging.debug("Making registration directory")
     ensure_directory_exists(args.registration_output_folder)
