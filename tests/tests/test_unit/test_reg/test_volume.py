@@ -4,7 +4,7 @@ import pandas as pd
 
 from amap.register.volume import calculate_volumes
 from amap.config.atlas import Atlas
-from amap.tools.source_files import source_custom_config_amap
+from imlib.source.source_files import source_custom_config_amap
 
 volume_data_path = os.path.join("tests", "data", "register", "volume")
 registered_atlas_path = os.path.join(volume_data_path, "registered_atlas.nii")
